@@ -32,7 +32,7 @@ class _RegisPageState extends State<RegisPage> {
           ),
           titleRegisWidget(),
           SizedBox(
-            height: 20,
+            height: 35,
           ),
           inputForm(),
         ],
@@ -75,7 +75,7 @@ class _RegisPageState extends State<RegisPage> {
               width: 8,
             ),
             Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: EdgeInsets.only(top: 2),
               width: 10,
               height: 10,
               decoration: BoxDecoration(
@@ -87,22 +87,36 @@ class _RegisPageState extends State<RegisPage> {
           height: 8,
         ),
         Text(
-          'Create Account',
+          'Please enter your details',
           style: TextStyle(
-              fontFamily: 'Roboto', fontSize: 20, color: Colors.white38),
+              fontFamily: 'Roboto', fontSize: 25, color: Colors.white38),
         )
       ],
     );
   }
 
   Widget inputForm() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        imageSelectorWidget(),
-      ],
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          imageSelectorWidget(),
+          SizedBox(
+            height: 20,
+          ),
+          nameTextFieldWidget(),
+          SizedBox(
+            height: 20,
+          ),
+          emailTextFieldWidget(),
+          SizedBox(
+            height: 20,
+          ),
+          passwordTextFieldWidget(),
+        ],
+      ),
     );
   }
 
@@ -113,7 +127,79 @@ class _RegisPageState extends State<RegisPage> {
         height: 130,
         width: 130,
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(100)),
+            image: DecorationImage(
+                image: AssetImage("images/avt.png"), fit: BoxFit.cover),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100)),
+      ),
+    );
+  }
+
+  Widget emailTextFieldWidget() {
+    return Container(
+        child: TextFormField(
+      autocorrect: false,
+      cursorColor: Colors.white,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(25),
+        fillColor: Colors.grey[900],
+        filled: true,
+        hintText: "Email",
+        hintStyle: TextStyle(color: Colors.white38),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(12)),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none),
+      ),
+    ));
+  }
+
+  Widget nameTextFieldWidget() {
+    return Container(
+      child: TextFormField(
+        autocorrect: false,
+        cursorColor: Colors.white,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(25),
+          fillColor: Colors.grey[900],
+          filled: true,
+          hintText: "Name",
+          hintStyle: TextStyle(color: Colors.white38),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(12)),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none),
+        ),
+      ),
+    );
+  }
+
+  Widget passwordTextFieldWidget() {
+    return Container(
+      child: TextFormField(
+        autocorrect: false,
+        cursorColor: Colors.white,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(25),
+          fillColor: Colors.grey[900],
+          filled: true,
+          suffixIcon: Icon(
+            Icons.vpn_key,
+            color: Colors.white38,
+          ),
+          hintText: "Password",
+          hintStyle: TextStyle(color: Colors.white38),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(12)),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none),
+        ),
       ),
     );
   }
