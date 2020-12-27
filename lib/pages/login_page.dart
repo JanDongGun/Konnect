@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget titleLoginWidget() {
     return Container(
-      padding: EdgeInsets.fromLTRB(6, 15, 0, 30),
+      padding: EdgeInsets.fromLTRB(6, 30, 0, 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
