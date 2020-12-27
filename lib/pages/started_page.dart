@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:konnect/constant.dart';
 import 'package:konnect/services/navigation_service.dart';
 
+import '../services/navigation_service.dart';
+
 class StartedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -95,14 +97,19 @@ class StartedPage extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Sign in",
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 22,
-                          color: Colors.white,
+                    child: GestureDetector(
+                      onTap: () {
+                        NavigationService.instance.navigateTo("login");
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Sign in",
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 22,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
