@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:konnect/constant.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:konnect/services/navigation_service.dart';
@@ -11,6 +12,15 @@ class RegisPage extends StatefulWidget {
 class _RegisPageState extends State<RegisPage> {
   double _deviceHeight;
   double _deviceWidth;
+
+  GlobalKey<FormState> _formKey;
+
+  bool _hidePass = true;
+
+  _RegisPageState() {
+    _formKey = GlobalKey<FormState>();
+  }
+
   @override
   Widget build(BuildContext context) {
     _deviceHeight = MediaQuery.of(context).size.height;
@@ -39,7 +49,7 @@ class _RegisPageState extends State<RegisPage> {
             ),
             titleRegisWidget(),
             SizedBox(
-              height: 35,
+              height: 30,
             ),
             inputForm(),
             Spacer(),
@@ -115,25 +125,31 @@ class _RegisPageState extends State<RegisPage> {
   Widget inputForm() {
     return Container(
       height: _deviceHeight * 0.44,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          imageSelectorWidget(),
-          SizedBox(
-            height: 20,
-          ),
-          nameTextFieldWidget(),
-          SizedBox(
-            height: 20,
-          ),
-          emailTextFieldWidget(),
-          SizedBox(
-            height: 20,
-          ),
-          passwordTextFieldWidget(),
-        ],
+      child: Form(
+        key: _formKey,
+        onChanged: () {
+          _formKey.currentState.save();
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            imageSelectorWidget(),
+            SizedBox(
+              height: 35,
+            ),
+            nameTextFieldWidget(),
+            SizedBox(
+              height: 20,
+            ),
+            emailTextFieldWidget(),
+            SizedBox(
+              height: 20,
+            ),
+            passwordTextFieldWidget(),
+          ],
+        ),
       ),
     );
   }
@@ -143,8 +159,8 @@ class _RegisPageState extends State<RegisPage> {
       child: Align(
         alignment: Alignment.center,
         child: Container(
-          height: _deviceHeight * 0.10,
-          width: _deviceHeight * 0.10,
+          height: _deviceHeight * 0.12,
+          width: _deviceHeight * 0.12,
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("images/avt.png"), fit: BoxFit.cover),
@@ -156,17 +172,15 @@ class _RegisPageState extends State<RegisPage> {
   }
 
   Widget emailTextFieldWidget() {
-    return Container(
-        child: TextFormField(
-      style: TextStyle(fontSize: 15, fontFamily: 'Roboto', color: Colors.white),
-      autocorrect: false,
-      cursorColor: Colors.white,
+    return TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      style: TextStyle(color: Colors.white, fontSize: 15),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.all(25),
         fillColor: Colors.grey[900],
         filled: true,
+        hintStyle: TextStyle(color: Colors.white38, fontSize: 15),
         hintText: "Email Address",
-        hintStyle: TextStyle(color: Colors.white38),
+        contentPadding: EdgeInsets.all(20),
         focusedBorder: OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(12)),
@@ -174,57 +188,76 @@ class _RegisPageState extends State<RegisPage> {
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none),
       ),
-    ));
+    );
   }
 
   Widget nameTextFieldWidget() {
-    return Container(
-      child: TextFormField(
-        style:
-            TextStyle(fontSize: 15, fontFamily: 'Roboto', color: Colors.white),
-        autocorrect: false,
-        cursorColor: Colors.white,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(25),
-          fillColor: Colors.grey[900],
-          filled: true,
-          hintText: "Name",
-          hintStyle: TextStyle(color: Colors.white38),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(12)),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none),
-        ),
+    return TextFormField(
+      style: TextStyle(color: Colors.white, fontSize: 15),
+      decoration: InputDecoration(
+        fillColor: Colors.grey[900],
+        filled: true,
+        hintStyle: TextStyle(color: Colors.white38, fontSize: 15),
+        hintText: "Name",
+        contentPadding: EdgeInsets.all(20),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(12)),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none),
       ),
     );
   }
 
   Widget passwordTextFieldWidget() {
     return Container(
-      child: TextFormField(
-        style:
-            TextStyle(fontSize: 15, fontFamily: 'Roboto', color: Colors.white),
-        autocorrect: false,
-        cursorColor: Colors.white,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(25),
-          fillColor: Colors.grey[900],
-          filled: true,
-          suffixIcon: Icon(
-            Icons.vpn_key,
-            color: Colors.white38,
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              keyboardType: TextInputType.text,
+              style: TextStyle(color: Colors.white, fontSize: 15),
+              obscureText: _hidePass,
+              decoration: InputDecoration(
+                fillColor: Colors.grey[900],
+                filled: true,
+                hintStyle: TextStyle(color: Colors.white38),
+                hintText: "Password",
+                contentPadding: EdgeInsets.all(20),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(12)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none),
+              ),
+            ),
           ),
-          hintText: "Password",
-          hintStyle: TextStyle(color: Colors.white38),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(12)),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none),
-        ),
+          SizedBox(
+            width: 30,
+          ),
+          Container(
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _hidePass = !_hidePass;
+                });
+              },
+              child: Icon(
+                Icons.vpn_key,
+                color: Colors.white38,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          )
+        ],
       ),
     );
   }
@@ -261,7 +294,7 @@ class _RegisPageState extends State<RegisPage> {
 
   Widget signUpButtonWidget() {
     return Container(
-      height: _deviceHeight * 0.09,
+      height: _deviceHeight * 0.087,
       width: _deviceWidth,
       child: SizedBox(
         height: 70,

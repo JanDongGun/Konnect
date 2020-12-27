@@ -8,6 +8,7 @@ class StartedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
       body: Padding(
         padding: EdgeInsets.all(15.0),
