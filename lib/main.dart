@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:konnect/pages/login_page.dart';
+import 'package:konnect/pages/register_page.dart';
 import 'services/navigation_service.dart';
 import 'package:konnect/pages/started_page.dart';
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "started": (BuildContext _context) => StartedPage(),
         "login": (BuildContext _context) => LoginPage(),
+        "regis": (BuildContext _context) => RegisPage(),
       },
     );
   }

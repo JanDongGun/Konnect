@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:konnect/constant.dart';
+import 'package:konnect/services/navigation_service.dart';
 
 class StartedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(25, 23, 32, 1.0),
+      backgroundColor: backgroundColor,
       body: Padding(
         padding: EdgeInsets.all(15.0),
         child: Column(
@@ -71,19 +72,24 @@ class StartedPage extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 90,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Text(
-                        "Sign up",
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                    child: GestureDetector(
+                      onTap: () {
+                        NavigationService.instance.navigateTo("regis");
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Text(
+                          "Sign up",
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
