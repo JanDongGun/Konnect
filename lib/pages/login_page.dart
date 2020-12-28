@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
         alignment: Alignment.centerRight,
         child: GestureDetector(
           onTap: () {
-            NavigationService.instance.navigateTo("forgot");
+            NavigationService.instance.navigateToReplacement("forgot");
           },
           child: Text(
             "Forgot Password?",

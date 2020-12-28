@@ -147,7 +147,7 @@ Widget sendMailButtonWidget() {
 Widget backToLoginWidget() {
   return GestureDetector(
     onTap: () {
-      NavigationService.instance.goBack();
+      NavigationService.instance.navigateToReplacement("login");
     },
     child: Text(
       "Back to login",
