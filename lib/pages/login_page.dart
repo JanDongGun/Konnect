@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:konnect/constant.dart';
-
-import '../services/navigation_service.dart';
 import '../services/navigation_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,6 +10,16 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _showPass = false;
+
+  GlobalKey<FormState> _formKey;
+
+  String _email;
+  String _password;
+
+  _LoginPageState() {
+    _formKey = GlobalKey<FormState>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,26 +114,39 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget inputForm() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-      child: Column(
-        children: [
-          emailInputWidget(),
-          SizedBox(
-            height: 20,
-          ),
-          passwordInputWidget(),
-          SizedBox(
-            height: 8,
-          ),
-          forgotPasswordWidget()
-        ],
+    return Form(
+      key: _formKey,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+        child: Column(
+          children: [
+            emailInputWidget(),
+            SizedBox(
+              height: 20,
+            ),
+            passwordInputWidget(),
+            SizedBox(
+              height: 8,
+            ),
+            forgotPasswordWidget()
+          ],
+        ),
       ),
     );
   }
 
   Widget emailInputWidget() {
     return TextFormField(
+      validator: (_input) {
+        return _input.contains("@") && _input.length > 1
+            ? null
+            : "Please type a valid email";
+      },
+      onSaved: (_input) {
+        setState(() {
+          _email = _input;
+        });
+      },
       style: TextStyle(color: Colors.white, fontSize: 15),
       decoration: InputDecoration(
         fillColor: Colors.grey[900],
@@ -147,6 +168,12 @@ class _LoginPageState extends State<LoginPage> {
     return TextFormField(
       style: TextStyle(color: Colors.white, fontSize: 15),
       obscureText: !_showPass,
+      validator: (_input) {
+        return _input.length >= 6 ? null : "Please type password";
+      },
+      onSaved: (_input) {
+        _password = _input;
+      },
       decoration: InputDecoration(
         fillColor: Colors.grey[900],
         filled: true,
@@ -231,7 +258,13 @@ class _LoginPageState extends State<LoginPage> {
       width: double.infinity,
       child: FlatButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            if (_formKey.currentState.validate()) {
+              print("Login success");
+            }
+          });
+        },
         color: dotColor,
         textColor: Colors.white,
         child: Text("Sign In",
