@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:konnect/pages/forgotpass_page.dart';
 import 'package:konnect/pages/login_page.dart';
 import 'package:konnect/pages/register_page.dart';
 import 'services/navigation_service.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         "started": (BuildContext _context) => StartedPage(),
         "login": (BuildContext _context) => LoginPage(),
         "regis": (BuildContext _context) => RegisPage(),
+        "forgot": (BuildContext _context) => ForgotpassPage(),
       },
     );
   }
