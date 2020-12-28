@@ -1,65 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:konnect/constant.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:konnect/services/navigation_service.dart';
 
-class ForgotpassPage extends StatefulWidget {
-  @override
-  _ForgotpassPageState createState() => _ForgotpassPageState();
-}
+import '../constant.dart';
 
-class _ForgotpassPageState extends State<ForgotpassPage> {
+class CheckMailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
-      body: forgotpassPageUI(),
+      body: checkMailPageUI(),
     );
   }
 }
 
-Widget forgotpassPageUI() {
+Widget checkMailPageUI() {
   return Container(
     margin: EdgeInsets.all(15),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          height: 20,
+          height: 70,
         ),
-        imageMailBoxWidget(),
+        imageMailWidget(),
         SizedBox(
           height: 30,
         ),
-        titleForgotWidget(),
-        SizedBox(
-          height: 60,
-        ),
-        emailForgotPassWidget(),
-        SizedBox(
-          height: 40,
-        ),
-        sendMailButtonWidget(),
+        titleMailWidget(),
         Spacer(),
-        backToLoginWidget()
+        okButtonWidget()
       ],
     ),
   );
 }
 
-Widget imageMailBoxWidget() {
+Widget imageMailWidget() {
   return Container(
     padding: EdgeInsets.fromLTRB(15, 30, 15, 15),
     child: SvgPicture.asset(
-      "images/mailbox.svg",
+      "images/mail.svg",
       height: 200,
       width: 200,
     ),
   );
 }
 
-Widget titleForgotWidget() {
+Widget titleMailWidget() {
   return Container(
     child: Column(
       children: [
@@ -67,10 +55,10 @@ Widget titleForgotWidget() {
           alignment: Alignment.center,
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
-              "Forgot your password?",
+              "Check your email",
               style: TextStyle(
                   fontFamily: "Roboto",
-                  fontSize: 27,
+                  fontSize: 30,
                   color: Colors.white,
                   fontWeight: FontWeight.w900),
             ),
@@ -91,7 +79,7 @@ Widget titleForgotWidget() {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 50),
           child: Text(
-            "Enter your registered mail below to receive password reset intruction",
+            "We have sent a password recovery instruction to your email",
             style: TextStyle(
               fontFamily: "Roboto",
               fontSize: 18,
@@ -105,54 +93,20 @@ Widget titleForgotWidget() {
   );
 }
 
-Widget emailForgotPassWidget() {
-  return Container(
-    child: TextFormField(
-      style: TextStyle(color: Colors.white, fontSize: 15),
-      decoration: InputDecoration(
-        fillColor: Colors.grey[900],
-        filled: true,
-        hintStyle: TextStyle(color: Colors.white38, fontSize: 15),
-        hintText: "Email Address",
-        contentPadding: EdgeInsets.all(20),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(12)),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none),
-      ),
-    ),
-  );
-}
-
-Widget sendMailButtonWidget() {
+Widget okButtonWidget() {
   return SizedBox(
     height: 60,
     width: double.infinity,
     child: FlatButton(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       onPressed: () {
-        NavigationService.instance.navigateToReplacement("checkmail");
+        NavigationService.instance.navigateToReplacement("login");
       },
       color: Color(0xFF00C898),
       textColor: Colors.white,
-      child: Text("Send",
+      child: Text("Ok",
           style: TextStyle(
               fontFamily: 'Roboto', fontSize: 22, fontWeight: FontWeight.bold)),
-    ),
-  );
-}
-
-Widget backToLoginWidget() {
-  return GestureDetector(
-    onTap: () {
-      NavigationService.instance.goBack();
-    },
-    child: Text(
-      "Back to login",
-      style:
-          TextStyle(color: Colors.white70, fontSize: 20, fontFamily: "Roboto"),
     ),
   );
 }
