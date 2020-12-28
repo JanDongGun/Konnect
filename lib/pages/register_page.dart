@@ -22,6 +22,10 @@ class _RegisPageState extends State<RegisPage> {
 
   File _image;
 
+  String _name;
+  String _email;
+  String _password;
+
   _RegisPageState() {
     _formKey = GlobalKey<FormState>();
   }
@@ -68,6 +72,8 @@ class _RegisPageState extends State<RegisPage> {
       ),
     );
   }
+
+  Widget groupToFlexible() {}
 
   Widget btnBackWidget() {
     return Container(
@@ -188,6 +194,16 @@ class _RegisPageState extends State<RegisPage> {
 
   Widget emailTextFieldWidget() {
     return TextFormField(
+      validator: (_input) {
+        return _input.length != 0 && _input.contains("@")
+            ? null
+            : "Please enter avalid email";
+      },
+      onSaved: (_input) {
+        setState(() {
+          _email = _input;
+        });
+      },
       keyboardType: TextInputType.emailAddress,
       style: TextStyle(color: Colors.white, fontSize: 15),
       decoration: InputDecoration(
@@ -208,6 +224,14 @@ class _RegisPageState extends State<RegisPage> {
 
   Widget nameTextFieldWidget() {
     return TextFormField(
+      validator: (_input) {
+        return _input.length != 0 ? null : "Please enter a name";
+      },
+      onSaved: (_input) {
+        setState(() {
+          _name = _input;
+        });
+      },
       style: TextStyle(color: Colors.white, fontSize: 15),
       decoration: InputDecoration(
         fillColor: Colors.grey[900],
@@ -235,6 +259,14 @@ class _RegisPageState extends State<RegisPage> {
         children: [
           Expanded(
             child: TextFormField(
+              validator: (_input) {
+                return _input.length != 0 ? null : "Please enter a password";
+              },
+              onSaved: (_input) {
+                setState(() {
+                  _password = _input;
+                });
+              },
               keyboardType: TextInputType.text,
               style: TextStyle(color: Colors.white, fontSize: 15),
               obscureText: _hidePass,
@@ -318,10 +350,11 @@ class _RegisPageState extends State<RegisPage> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           onPressed: () {},
-          color: Colors.white,
+          color: dotColor,
           textColor: Colors.black,
           child: Text("Sign Up",
               style: TextStyle(
+                  color: Colors.white,
                   fontFamily: 'Roboto',
                   fontSize: 22,
                   fontWeight: FontWeight.bold)),
