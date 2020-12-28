@@ -15,6 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
       body: loginPageUI(),
     );
@@ -113,7 +114,11 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: 20,
           ),
-          passwordInputWidget()
+          passwordInputWidget(),
+          SizedBox(
+            height: 8,
+          ),
+          forgotPasswordWidget()
         ],
       ),
     );
@@ -163,6 +168,27 @@ class _LoginPageState extends State<LoginPage> {
           child: Icon(
             Icons.vpn_key,
             color: Colors.white38,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget forgotPasswordWidget() {
+    return Container(
+      margin: EdgeInsets.only(right: 20),
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: GestureDetector(
+          onTap: () {
+            NavigationService.instance.navigateTo("forgot");
+          },
+          child: Text(
+            "Forgot Password?",
+            style: TextStyle(
+              color: Colors.white38,
+              fontSize: 13,
+            ),
           ),
         ),
       ),
