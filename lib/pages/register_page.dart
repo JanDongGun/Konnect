@@ -73,8 +73,6 @@ class _RegisPageState extends State<RegisPage> {
     );
   }
 
-  Widget groupToFlexible() {}
-
   Widget btnBackWidget() {
     return Container(
       margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
@@ -260,7 +258,7 @@ class _RegisPageState extends State<RegisPage> {
           Expanded(
             child: TextFormField(
               validator: (_input) {
-                return _input.length != 0 ? null : "Please enter a password";
+                return _input.length > 7 ? null : "Please enter a password";
               },
               onSaved: (_input) {
                 setState(() {
