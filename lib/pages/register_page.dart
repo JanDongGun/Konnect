@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:konnect/constant.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:konnect/services/navigation_service.dart';
+import 'package:konnect/services/media_service.dart';
 
 class RegisPage extends StatefulWidget {
   @override
@@ -16,6 +19,8 @@ class _RegisPageState extends State<RegisPage> {
   GlobalKey<FormState> _formKey;
 
   bool _hidePass = true;
+
+  File _image;
 
   _RegisPageState() {
     _formKey = GlobalKey<FormState>();
@@ -155,20 +160,30 @@ class _RegisPageState extends State<RegisPage> {
   }
 
   Widget imageSelectorWidget() {
-    return Container(
-      child: Align(
-        alignment: Alignment.center,
+    return GestureDetector(
+        onTap: () async {
+          File _imageFile = await MediaService.instance.getImageInLibary();
+          setState(() {
+            _image = _imageFile;
+          });
+        },
         child: Container(
-          height: _deviceHeight * 0.12,
-          width: _deviceHeight * 0.12,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("images/avt.png"), fit: BoxFit.cover),
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(100)),
-        ),
-      ),
-    );
+          child: Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: _deviceHeight * 0.12,
+              width: _deviceHeight * 0.12,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: _image != null
+                          ? FileImage(_image)
+                          : AssetImage("images/avt.png"),
+                      fit: BoxFit.cover),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100)),
+            ),
+          ),
+        ));
   }
 
   Widget emailTextFieldWidget() {
