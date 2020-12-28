@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:konnect/pages/CheckMail.dart';
 import 'package:konnect/pages/forgotpass_page.dart';
 import 'package:konnect/pages/login_page.dart';
 import 'package:konnect/pages/register_page.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         "login": (BuildContext _context) => LoginPage(),
         "regis": (BuildContext _context) => RegisPage(),
         "forgot": (BuildContext _context) => ForgotpassPage(),
+        "checkmail": (BuildContext _context) => CheckMailPage()
       },
     );
   }
