@@ -73,6 +73,8 @@ class _RegisPageState extends State<RegisPage> {
     );
   }
 
+  Widget groupToFlexible() {}
+
   Widget btnBackWidget() {
     return Container(
       margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
@@ -348,10 +350,11 @@ class _RegisPageState extends State<RegisPage> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           onPressed: () {},
-          color: Colors.white,
+          color: dotColor,
           textColor: Colors.black,
           child: Text("Sign Up",
               style: TextStyle(
+                  color: Colors.white,
                   fontFamily: 'Roboto',
                   fontSize: 22,
                   fontWeight: FontWeight.bold)),

@@ -69,7 +69,7 @@ class StartedPage extends StatelessWidget {
               height: 70,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: signInBtnColor,
+                color: dotColor,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -107,6 +107,7 @@ class StartedPage extends StatelessWidget {
                         child: Text(
                           "Sign in",
                           style: TextStyle(
+                            fontWeight: FontWeight.bold,
                             fontFamily: 'Roboto',
                             fontSize: 22,
                             color: Colors.white,
