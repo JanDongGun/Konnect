@@ -232,10 +232,11 @@ class _LoginPageState extends State<LoginPage> {
       child: FlatButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         onPressed: () {},
-        color: Colors.white,
+        color: dotColor,
         textColor: Colors.black,
         child: Text("Sign In",
             style: TextStyle(
+                color: Colors.white,
                 fontFamily: 'Roboto',
                 fontSize: 22,
                 fontWeight: FontWeight.bold)),
