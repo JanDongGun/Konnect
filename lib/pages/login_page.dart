@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
         alignment: Alignment.centerRight,
         child: GestureDetector(
           onTap: () {
-            NavigationService.instance.navigateTo("forgot");
+            NavigationService.instance.navigateToReplacement("forgot");
           },
           child: Text(
             "Forgot Password?",
@@ -233,7 +233,7 @@ class _LoginPageState extends State<LoginPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         onPressed: () {},
         color: dotColor,
-        textColor: Colors.black,
+        textColor: Colors.white,
         child: Text("Sign In",
             style: TextStyle(
                 color: Colors.white,
