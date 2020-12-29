@@ -9,12 +9,12 @@ class DBService {
     _db = FirebaseFirestore.instance;
   }
 
-  String _userCollection = "User";
+  String _userCollection = "Users";
 
   Future<void> createUserInDB(
       String _uid, String _name, String _email, String _imageURL) async {
     try {
-      await _db.collection(_userCollection).doc(_uid).set({
+      return await _db.collection(_userCollection).doc(_uid).setData({
         "name": _name,
         "email": _email,
         "image": _imageURL,
