@@ -3,8 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:konnect/constant.dart';
 import 'package:konnect/services/snackbar_service.dart';
 import '../provider/auth_provider.dart';
-import '../provider/auth_provider.dart';
-import '../provider/auth_provider.dart';
 import '../services/navigation_service.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +27,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(_email);
+    print(_password);
     return Scaffold(
       backgroundColor: backgroundColor,
       body: Container(
@@ -135,6 +135,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget inputForm() {
     return Form(
       key: _formKey,
+      onChanged: () {
+        _formKey.currentState.save();
+      },
       child: Container(
         padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
         child: Column(

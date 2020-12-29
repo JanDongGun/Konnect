@@ -34,7 +34,13 @@ class AuthProvider extends ChangeNotifier {
       // Navigator to homepage
     } catch (e) {
       status = AuthStatus.Error;
-      SnackBarSv.instance.showSnackbarError("X");
+
+      if (e.code == 'user-not-found') {
+        SnackBarSv.instance.showSnackbarError("No user found for that email.");
+      } else if (e.code == 'wrong-password') {
+        SnackBarSv.instance
+            .showSnackbarError("Wrong password provided for that user.");
+      }
     }
     notifyListeners();
   }
