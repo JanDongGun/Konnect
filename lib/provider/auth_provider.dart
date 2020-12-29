@@ -33,7 +33,6 @@ class AuthProvider extends ChangeNotifier {
       status = AuthStatus.Authenticated;
       SnackBarSv.instance.showSnackbarSuccess("Loggin hay hay, ${user.email}");
       NavigationService.instance.navigateToReplacement("homepage");
-      // Navigator to homepage
     } catch (e) {
       status = AuthStatus.Error;
       if (e.code == 'invalid-email') {
@@ -60,7 +59,7 @@ class AuthProvider extends ChangeNotifier {
       status = AuthStatus.Authenticated;
       await onSuccess(user.uid);
       SnackBarSv.instance.showSnackbarSuccess("Loggin yo hay, ${user.email}");
-      // Navigator to homepage
+      NavigationService.instance.navigateToReplacement("login");
     } catch (e) {
       status = AuthStatus.Error;
       print(e);
