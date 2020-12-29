@@ -151,7 +151,7 @@ class _ForgotpassPageState extends State<ForgotpassPage> {
           if (_formKey.currentState.validate())
             NavigationService.instance.navigateToReplacement("checkmail");
         },
-        color: Color(0xFF00C898),
+        color: dotColor,
         textColor: Colors.white,
         child: Text("Send",
             style: TextStyle(
