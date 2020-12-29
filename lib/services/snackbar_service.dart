@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../constant.dart';
+
 class SnackBarSv {
   BuildContext _buildContext;
 
@@ -15,7 +17,8 @@ class SnackBarSv {
   void showSnackbarError(String _message) {
     Scaffold.of(_buildContext).showSnackBar(
       SnackBar(
-        duration: Duration(seconds: 2),
+        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        duration: Duration(seconds: 1),
         content: Text(
           _message,
           style: TextStyle(color: Colors.white, fontSize: 15),
@@ -28,12 +31,13 @@ class SnackBarSv {
   void showSnackbarSuccess(String _message) {
     Scaffold.of(_buildContext).showSnackBar(
       SnackBar(
-        duration: Duration(seconds: 2),
+        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        duration: Duration(seconds: 1),
         content: Text(
           _message,
           style: TextStyle(color: Colors.white, fontSize: 15),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: dotColor,
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../services/navigation_service.dart';
 import '../services/snackbar_service.dart';
 
 enum AuthStatus {
@@ -31,11 +32,13 @@ class AuthProvider extends ChangeNotifier {
       user = _result.user;
       status = AuthStatus.Authenticated;
       SnackBarSv.instance.showSnackbarSuccess("Loggin hay hay, ${user.email}");
+      NavigationService.instance.navigateToReplacement("homepage");
       // Navigator to homepage
     } catch (e) {
       status = AuthStatus.Error;
-
-      if (e.code == 'user-not-found') {
+      if (e.code == 'invalid-email') {
+        SnackBarSv.instance.showSnackbarError("invalid email");
+      } else if (e.code == 'user-not-found') {
         SnackBarSv.instance.showSnackbarError("No user found for that email.");
       } else if (e.code == 'wrong-password') {
         SnackBarSv.instance
