@@ -6,6 +6,8 @@ import '../provider/auth_provider.dart';
 import '../services/navigation_service.dart';
 import 'package:provider/provider.dart';
 
+import '../services/navigation_service.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -275,27 +277,28 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget signinButtonWidget() {
-    return SizedBox(
-      height: 70,
-      width: double.infinity,
-      child: FlatButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        onPressed: () {
-          setState(() {
-            if (_formKey.currentState.validate()) {
-              _auth.loginUserWithEmailAndPassword(_email, _password);
-            }
-          });
-        },
-        color: dotColor,
-        textColor: Colors.white,
-        child: Text("Sign In",
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'Roboto',
-                fontSize: 22,
-                fontWeight: FontWeight.bold)),
-      ),
-    );
+    return _auth.status == AuthStatus.Authenticating
+        ? Align(alignment: Alignment.center, child: CircularProgressIndicator())
+        : SizedBox(
+            height: 70,
+            width: double.infinity,
+            child: FlatButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  _auth.loginUserWithEmailAndPassword(_email, _password);
+                }
+              },
+              color: dotColor,
+              textColor: Colors.white,
+              child: Text("Sign In",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Roboto',
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold)),
+            ),
+          );
   }
 }
