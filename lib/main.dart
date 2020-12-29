@@ -5,10 +5,11 @@ import 'package:konnect/pages/login_page.dart';
 import 'package:konnect/pages/register_page.dart';
 import 'services/navigation_service.dart';
 import 'package:konnect/pages/started_page.dart';
-import 'package:konnect/services/db_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
