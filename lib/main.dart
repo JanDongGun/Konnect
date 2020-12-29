@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    //DBService.instance.createUserInDB(
-    //   "0123", "Dung", "dung@gmail.com", "http://www.pravat.cc");
+    DBService.instance.createUserInDB(
+        "0123", "Dung", "dung@gmail.com", "http://www.pravat.cc");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: NavigationService.instance.navigatorKey,
