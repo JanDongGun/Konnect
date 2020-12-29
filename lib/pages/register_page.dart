@@ -35,8 +35,7 @@ class _RegisPageState extends State<RegisPage> {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: regisPageUI(),
+      body: SingleChildScrollView(child: regisPageUI()),
       backgroundColor: backgroundColor,
     );
   }
@@ -61,7 +60,9 @@ class _RegisPageState extends State<RegisPage> {
               height: 30,
             ),
             inputForm(),
-            Spacer(),
+            SizedBox(
+              height: 70,
+            ),
             textSignInWidget(),
             SizedBox(
               height: 20,
