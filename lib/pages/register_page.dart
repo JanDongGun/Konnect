@@ -137,6 +137,10 @@ class _RegisPageState extends State<RegisPage> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            imageSelectorWidget(),
+            SizedBox(
+              height: 20,
+            ),
             nameTextFieldWidget(),
             SizedBox(
               height: 20,
@@ -149,7 +153,6 @@ class _RegisPageState extends State<RegisPage> {
             SizedBox(
               height: 20,
             ),
-            imageSelectorWidget(),
           ],
         ),
       ),
