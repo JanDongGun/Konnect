@@ -31,7 +31,7 @@ class AuthProvider extends ChangeNotifier {
 
       user = _result.user;
       status = AuthStatus.Authenticated;
-      SnackBarSv.instance.showSnackbarSuccess("Loggin hay hay, ${user.email}");
+      SnackBarSv.instance.showSnackbarSuccess("Welcome, ${user.email}");
       NavigationService.instance.navigateToReplacement("homepage");
     } catch (e) {
       status = AuthStatus.Error;
@@ -58,15 +58,21 @@ class AuthProvider extends ChangeNotifier {
       user = _result.user;
       status = AuthStatus.Authenticated;
       await onSuccess(user.uid);
-      SnackBarSv.instance.showSnackbarSuccess("Loggin yo hay, ${user.email}");
+      SnackBarSv.instance.showSnackbarSuccess("Welcome, ${user.email}");
       NavigationService.instance.navigateToReplacement("login");
     } catch (e) {
       status = AuthStatus.Error;
-      print(e);
-
       user = null;
       SnackBarSv.instance.showSnackbarError("Error Registering User");
     }
     notifyListeners();
+  }
+
+  void sendVerificationEmail() async {
+    User firebaseUser = FirebaseAuth.instance.currentUser;
+    await firebaseUser.sendEmailVerification();
+    SnackBarSv.instance
+        .showSnackbarSuccess("email verifcation link has sent to your email");
+    NavigationService.instance.navigateToReplacement("login");
   }
 }
