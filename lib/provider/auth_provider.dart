@@ -44,4 +44,27 @@ class AuthProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void regisUserWithEmailAndPassword(String _email, String _password,
+      Future<void> onSuccess(String _uid)) async {
+    status = AuthStatus.Authenticating;
+    notifyListeners();
+    try {
+      UserCredential _result = await _auth.createUserWithEmailAndPassword(
+          email: _email, password: _password);
+
+      user = _result.user;
+      status = AuthStatus.Authenticated;
+      await onSuccess(user.uid);
+      SnackBarSv.instance.showSnackbarSuccess("Loggin yo hay, ${user.email}");
+      // Navigator to homepage
+    } catch (e) {
+      status = AuthStatus.Error;
+      print(e);
+
+      user = null;
+      SnackBarSv.instance.showSnackbarError("Error Registering User");
+    }
+    notifyListeners();
+  }
 }
