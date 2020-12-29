@@ -8,6 +8,7 @@ import 'package:konnect/services/db_service.dart';
 import 'package:konnect/services/navigation_service.dart';
 import 'package:konnect/services/media_service.dart';
 import 'package:konnect/services/cloud_storage_service.dart';
+import 'package:konnect/services/snackbar_service.dart';
 import 'package:provider/provider.dart';
 
 class RegisPage extends StatefulWidget {
@@ -45,6 +46,7 @@ class _RegisPageState extends State<RegisPage> {
 
   Widget regisPageUI() {
     return Builder(builder: (BuildContext _context) {
+      SnackBarSv.instance.buildContext = _context;
       _auth = Provider.of<AuthProvider>(_context);
       return Container(
         child: Padding(
@@ -355,6 +357,9 @@ class _RegisPageState extends State<RegisPage> {
                         await DBService.instance
                             .createUserInDB(_uid, _name, _password, _imageURL);
                       });
+                    } else if (_image == null) {
+                      SnackBarSv.instance
+                          .showSnackbarError('Please insert avatar');
                     }
                   });
                 },
