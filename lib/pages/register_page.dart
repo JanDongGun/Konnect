@@ -1,11 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:konnect/constant.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:konnect/services/navigation_service.dart';
 import 'package:konnect/services/media_service.dart';
+import 'package:konnect/services/db_service.dart';
 
 class RegisPage extends StatefulWidget {
   @override
