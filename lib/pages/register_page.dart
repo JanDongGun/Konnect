@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:konnect/constant.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:konnect/provider/auth_provider.dart';
+import 'package:konnect/services/db_service.dart';
 import 'package:konnect/services/navigation_service.dart';
 import 'package:konnect/services/media_service.dart';
-import 'package:konnect/services/db_service.dart';
+import 'package:konnect/services/cloud_storage_service.dart';
+import 'package:provider/provider.dart';
 
 class RegisPage extends StatefulWidget {
   @override
@@ -14,6 +17,7 @@ class RegisPage extends StatefulWidget {
 
 class _RegisPageState extends State<RegisPage> {
   GlobalKey<FormState> _formKey;
+  AuthProvider _auth;
 
   bool _hidePass = true;
 
@@ -30,42 +34,49 @@ class _RegisPageState extends State<RegisPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(child: regisPageUI()),
+      body: SingleChildScrollView(
+          child: ChangeNotifierProvider<AuthProvider>.value(
+        value: AuthProvider.instance,
+        child: regisPageUI(),
+      )),
       backgroundColor: backgroundColor,
     );
   }
 
   Widget regisPageUI() {
-    return Container(
-      child: Padding(
-        padding: EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            btnBackWidget(),
-            SizedBox(
-              height: 30,
-            ),
-            titleRegisWidget(),
-            SizedBox(
-              height: 20,
-            ),
-            inputForm(),
-            SizedBox(
-              height: 70,
-            ),
-            textSignInWidget(),
-            SizedBox(
-              height: 20,
-            ),
-            signUpButtonWidget()
-          ],
+    return Builder(builder: (BuildContext _context) {
+      _auth = Provider.of<AuthProvider>(_context);
+      return Container(
+        child: Padding(
+          padding: EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              btnBackWidget(),
+              SizedBox(
+                height: 30,
+              ),
+              titleRegisWidget(),
+              SizedBox(
+                height: 20,
+              ),
+              inputForm(),
+              SizedBox(
+                height: 70,
+              ),
+              textSignInWidget(),
+              SizedBox(
+                height: 20,
+              ),
+              signUpButtonWidget()
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget btnBackWidget() {
@@ -323,32 +334,44 @@ class _RegisPageState extends State<RegisPage> {
   }
 
   Widget signUpButtonWidget() {
-    return Container(
-      height: 70,
-      width: double.infinity,
-      child: SizedBox(
-        height: 70,
-        width: double.infinity,
-        child: FlatButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          onPressed: () {
-            setState(() {
-              if (_formKey.currentState.validate()) {
-                print("Sign up success");
-              }
-            });
-          },
-          color: dotColor,
-          textColor: Colors.black,
-          child: Text("Sign Up",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Roboto',
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold)),
-        ),
-      ),
-    );
+    return _auth.status != AuthStatus.Authenticating
+        ? Container(
+            height: 70,
+            width: double.infinity,
+            child: SizedBox(
+              height: 70,
+              width: double.infinity,
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                onPressed: () {
+                  setState(() {
+                    if (_formKey.currentState.validate() && _image != null) {
+                      _auth.regisUserWithEmailAndPassword(_email, _password,
+                          (String _uid) async {
+                        var _result = await CloudStorageService.instance
+                            .uploadUserImage(_uid, _image);
+                        var _imageURL = await _result.ref.getDownloadURL();
+                        await DBService.instance
+                            .createUserInDB(_uid, _name, _password, _imageURL);
+                      });
+                    }
+                  });
+                },
+                color: dotColor,
+                textColor: Colors.black,
+                child: Text("Sign Up",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Roboto',
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold)),
+              ),
+            ),
+          )
+        : Align(
+            child: CircularProgressIndicator(),
+            alignment: Alignment.center,
+          );
   }
 }
