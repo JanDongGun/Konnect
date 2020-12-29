@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:konnect/constant.dart';
+import 'package:konnect/services/snackbar_service.dart';
+import '../provider/auth_provider.dart';
+import '../provider/auth_provider.dart';
+import '../provider/auth_provider.dart';
 import '../services/navigation_service.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,6 +21,8 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
 
+  AuthProvider _auth;
+
   _LoginPageState() {
     _formKey = GlobalKey<FormState>();
   }
@@ -24,33 +31,44 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SingleChildScrollView(child: loginPageUI()),
+      body: Container(
+        child: ChangeNotifierProvider<AuthProvider>.value(
+          value: AuthProvider.instance,
+          child: SingleChildScrollView(
+            child: loginPageUI(),
+          ),
+        ),
+      ),
     );
   }
 
   Widget loginPageUI() {
-    return Container(
-      margin: EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 20,
-          ),
-          btnBackWidget(),
-          titleLoginWidget(),
-          inputForm(),
-          SizedBox(
-            height: 230,
-          ),
-          textSignUpWidget(),
-          SizedBox(
-            height: 20,
-          ),
-          signinButtonWidget(),
-        ],
-      ),
-    );
+    return Builder(builder: (BuildContext _context) {
+      SnackBarSv.instance.buildContext = _context;
+      _auth = Provider.of<AuthProvider>(_context);
+      return Container(
+        margin: EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            btnBackWidget(),
+            titleLoginWidget(),
+            inputForm(),
+            SizedBox(
+              height: 230,
+            ),
+            textSignUpWidget(),
+            SizedBox(
+              height: 20,
+            ),
+            signinButtonWidget(),
+          ],
+        ),
+      );
+    });
   }
 
   Widget btnBackWidget() {
@@ -262,7 +280,7 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () {
           setState(() {
             if (_formKey.currentState.validate()) {
-              print("Login success");
+              _auth.loginUserWithEmailAndPassword(_email, _password);
             }
           });
         },
