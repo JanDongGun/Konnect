@@ -23,9 +23,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
-      body: loginPageUI(),
+      body: SingleChildScrollView(child: loginPageUI()),
     );
   }
 
@@ -41,7 +40,9 @@ class _LoginPageState extends State<LoginPage> {
           btnBackWidget(),
           titleLoginWidget(),
           inputForm(),
-          Spacer(),
+          SizedBox(
+            height: 230,
+          ),
           textSignUpWidget(),
           SizedBox(
             height: 20,
