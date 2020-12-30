@@ -6,8 +6,6 @@ import '../provider/auth_provider.dart';
 import '../services/navigation_service.dart';
 import 'package:provider/provider.dart';
 
-import '../services/navigation_service.dart';
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
