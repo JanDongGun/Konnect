@@ -75,4 +75,18 @@ class AuthProvider extends ChangeNotifier {
         .showSnackbarSuccess("email verifcation link has sent to your email");
     NavigationService.instance.navigateToReplacement("login");
   }
+
+  void logoutUser(Future<void> onSuccess()) async {
+    try {
+      await _auth.signOut();
+      user = null;
+      status = AuthStatus.NotAuthenticated;
+      await onSuccess();
+      await NavigationService.instance.navigateToReplacement('login');
+      SnackBarSv.instance.showSnackbarSuccess('Logged out successfully');
+          
+    } catch (e) {
+      SnackBarSv.instance.showSnackbarSuccess('Logged out error');
+    }
+  }
 }
