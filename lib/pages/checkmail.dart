@@ -78,7 +78,7 @@ class CheckMailPage extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 50),
             child: Text(
-              "We have sent a password recovery instruction to your email",
+              "We have emailed you. Please check it",
               style: TextStyle(
                 fontFamily: "Roboto",
                 fontSize: 18,
