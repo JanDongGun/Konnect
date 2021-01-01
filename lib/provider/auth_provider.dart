@@ -11,6 +11,12 @@ enum AuthStatus {
   Error,
 }
 
+enum EmailStatus {
+  Sending,
+  Sended,
+  Error,
+}
+
 class AuthProvider extends ChangeNotifier {
   User user;
   AuthStatus status;
@@ -68,14 +74,6 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void sendVerificationEmail() async {
-    User firebaseUser = FirebaseAuth.instance.currentUser;
-    await firebaseUser.sendEmailVerification();
-    SnackBarSv.instance
-        .showSnackbarSuccess("email verifcation link has sent to your email");
-    NavigationService.instance.navigateToReplacement("login");
-  }
-
   void logoutUser(Future<void> onSuccess()) async {
     try {
       await _auth.signOut();
@@ -84,7 +82,6 @@ class AuthProvider extends ChangeNotifier {
       await onSuccess();
       await NavigationService.instance.navigateToReplacement('login');
       SnackBarSv.instance.showSnackbarSuccess('Logged out successfully');
-          
     } catch (e) {
       SnackBarSv.instance.showSnackbarSuccess('Logged out error');
     }
