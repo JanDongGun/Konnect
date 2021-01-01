@@ -215,7 +215,7 @@ class _RegisPageState extends State<RegisPage> {
       validator: (_input) {
         return _input.length != 0 && _input.contains("@")
             ? null
-            : "Please enter avalid email";
+            : "Please enter a valid email";
       },
       onSaved: (_input) {
         setState(() {
@@ -355,7 +355,7 @@ class _RegisPageState extends State<RegisPage> {
                             .uploadUserImage(_uid, _image);
                         var _imageURL = await _result.ref.getDownloadURL();
                         await DBService.instance
-                            .createUserInDB(_uid, _name, _password, _imageURL);
+                            .createUserInDB(_uid, _name, _email, _imageURL);
                       });
                     } else if (_image == null) {
                       SnackBarSv.instance
