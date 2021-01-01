@@ -336,8 +336,12 @@ class _RegisPageState extends State<RegisPage> {
   }
 
   Widget signUpButtonWidget() {
-    return _auth.status != AuthStatus.Authenticating
-        ? Container(
+    return _auth.status == AuthStatus.Authenticating
+        ? Align(
+            child: CircularProgressIndicator(),
+            alignment: Alignment.center,
+          )
+        : Container(
             height: 70,
             width: double.infinity,
             child: SizedBox(
@@ -349,8 +353,14 @@ class _RegisPageState extends State<RegisPage> {
                 onPressed: () {
                   setState(() {
                     if (_formKey.currentState.validate() && _image != null) {
-                      NavigationService.instance
-                          .navigateToReplacement("checkmail");
+                      _auth.regisUserWithEmailAndPassword(_email, _password,
+                          (String _uid) async {
+                        var _result = await CloudStorageService.instance
+                            .uploadUserImage(_uid, _image);
+                        var _imageURL = await _result.ref.getDownloadURL();
+                        await DBService.instance
+                            .createUserInDB(_uid, _name, _email, _imageURL);
+                      });
                     } else if (_image == null) {
                       SnackBarSv.instance
                           .showSnackbarError('Please insert avatar');
@@ -367,10 +377,6 @@ class _RegisPageState extends State<RegisPage> {
                         fontWeight: FontWeight.bold)),
               ),
             ),
-          )
-        : Align(
-            child: CircularProgressIndicator(),
-            alignment: Alignment.center,
           );
   }
 }
