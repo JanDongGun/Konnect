@@ -8,6 +8,7 @@ import 'package:konnect/services/db_service.dart';
 import 'package:konnect/services/navigation_service.dart';
 import 'package:konnect/services/media_service.dart';
 import 'package:konnect/services/cloud_storage_service.dart';
+import 'package:konnect/services/snackbar_service.dart';
 import 'package:provider/provider.dart';
 
 class RegisPage extends StatefulWidget {
@@ -45,6 +46,7 @@ class _RegisPageState extends State<RegisPage> {
 
   Widget regisPageUI() {
     return Builder(builder: (BuildContext _context) {
+      SnackBarSv.instance.buildContext = _context;
       _auth = Provider.of<AuthProvider>(_context);
       return Container(
         child: Padding(
@@ -213,7 +215,7 @@ class _RegisPageState extends State<RegisPage> {
       validator: (_input) {
         return _input.length != 0 && _input.contains("@")
             ? null
-            : "Please enter avalid email";
+            : "Please enter a valid email";
       },
       onSaved: (_input) {
         setState(() {
@@ -334,8 +336,12 @@ class _RegisPageState extends State<RegisPage> {
   }
 
   Widget signUpButtonWidget() {
-    return _auth.status != AuthStatus.Authenticating
-        ? Container(
+    return _auth.status == AuthStatus.Authenticating
+        ? Align(
+            child: CircularProgressIndicator(),
+            alignment: Alignment.center,
+          )
+        : Container(
             height: 70,
             width: double.infinity,
             child: SizedBox(
@@ -353,8 +359,14 @@ class _RegisPageState extends State<RegisPage> {
                             .uploadUserImage(_uid, _image);
                         var _imageURL = await _result.ref.getDownloadURL();
                         await DBService.instance
-                            .createUserInDB(_uid, _name, _password, _imageURL);
+                            .createUserInDB(_uid, _name, _email, _imageURL)
+                            .then((_) {
+                          NavigationService.instance.navigateTo("verify");
+                        });
                       });
+                    } else if (_image == null) {
+                      SnackBarSv.instance
+                          .showSnackbarError('Please insert avatar');
                     }
                   });
                 },
@@ -368,10 +380,6 @@ class _RegisPageState extends State<RegisPage> {
                         fontWeight: FontWeight.bold)),
               ),
             ),
-          )
-        : Align(
-            child: CircularProgressIndicator(),
-            alignment: Alignment.center,
           );
   }
 }

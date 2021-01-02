@@ -11,9 +11,16 @@ enum AuthStatus {
   Error,
 }
 
+enum EmailStatus {
+  Sending,
+  Sended,
+  Error,
+}
+
 class AuthProvider extends ChangeNotifier {
   User user;
   AuthStatus status;
+  EmailStatus emailStatus;
   FirebaseAuth _auth;
 
   static AuthProvider instance = AuthProvider();
@@ -31,7 +38,7 @@ class AuthProvider extends ChangeNotifier {
 
       user = _result.user;
       status = AuthStatus.Authenticated;
-      SnackBarSv.instance.showSnackbarSuccess("Loggin hay hay, ${user.email}");
+      SnackBarSv.instance.showSnackbarSuccess("Welcome, ${user.email}");
       NavigationService.instance.navigateToReplacement("homepage");
     } catch (e) {
       status = AuthStatus.Error;
@@ -74,15 +81,24 @@ class AuthProvider extends ChangeNotifier {
       user = _result.user;
       status = AuthStatus.Authenticated;
       await onSuccess(user.uid);
-      SnackBarSv.instance.showSnackbarSuccess("Loggin yo hay, ${user.email}");
-      // Navigator to homepage
     } catch (e) {
       status = AuthStatus.Error;
-      print(e);
-
       user = null;
       SnackBarSv.instance.showSnackbarError("Error Registering User");
     }
     notifyListeners();
+  }
+
+  void logoutUser(Future<void> onSuccess()) async {
+    try {
+      await _auth.signOut();
+      user = null;
+      status = AuthStatus.NotAuthenticated;
+      await onSuccess();
+      await NavigationService.instance.navigateToReplacement('login');
+      SnackBarSv.instance.showSnackbarSuccess('Logged out successfully');
+    } catch (e) {
+      SnackBarSv.instance.showSnackbarSuccess('Logged out error');
+    }
   }
 }
