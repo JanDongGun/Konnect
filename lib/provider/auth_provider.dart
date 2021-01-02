@@ -65,8 +65,6 @@ class AuthProvider extends ChangeNotifier {
       user = _result.user;
       status = AuthStatus.Authenticated;
       await onSuccess(user.uid);
-      SnackBarSv.instance.showSnackbarSuccess("Welcome, ${user.email}");
-      NavigationService.instance.navigateToReplacement("login");
     } catch (e) {
       status = AuthStatus.Error;
       user = null;
