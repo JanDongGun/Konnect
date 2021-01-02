@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:konnect/constant.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:konnect/services/navigation_service.dart';
+import 'package:konnect/services/snackbar_service.dart';
+import '../provider/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class ForgotpassPage extends StatefulWidget {
   @override
@@ -10,6 +13,7 @@ class ForgotpassPage extends StatefulWidget {
 
 class _ForgotpassPageState extends State<ForgotpassPage> {
   String _email;
+  AuthProvider _auth;
 
   GlobalKey<FormState> _formKey;
 
@@ -19,42 +23,57 @@ class _ForgotpassPageState extends State<ForgotpassPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
-      body: forgotpassPageUI(),
+      body: Container(
+        child: ChangeNotifierProvider<AuthProvider>.value(
+          value: AuthProvider.instance,
+          child: SingleChildScrollView(
+            child: forgotpassPageUI(),
+          ),
+        ),
+      ),
     );
   }
 
   Widget forgotpassPageUI() {
-    return Form(
-      key: _formKey,
-      child: Container(
-        margin: EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            imageMailBoxWidget(),
-            SizedBox(
-              height: 30,
-            ),
-            titleForgotWidget(),
-            SizedBox(
-              height: 60,
-            ),
-            emailForgotPassWidget(),
-            SizedBox(
-              height: 40,
-            ),
-            sendMailButtonWidget(),
-            Spacer(),
-            backToLoginWidget()
-          ],
+    return Builder(builder: (BuildContext _context) {
+      SnackBarSv.instance.buildContext = _context;
+      _auth = Provider.of<AuthProvider>(_context);
+      return Form(
+        key: _formKey,
+        onChanged: () {
+          _formKey.currentState.save();
+        },
+        child: Container(
+          margin: EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              imageMailBoxWidget(),
+              SizedBox(
+                height: 30,
+              ),
+              titleForgotWidget(),
+              SizedBox(
+                height: 60,
+              ),
+              emailForgotPassWidget(),
+              SizedBox(
+                height: 40,
+              ),
+              sendMailButtonWidget(),
+              SizedBox(
+                height: 20,
+              ),
+              backToLoginWidget()
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget imageMailBoxWidget() {
@@ -148,8 +167,9 @@ class _ForgotpassPageState extends State<ForgotpassPage> {
       child: FlatButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         onPressed: () {
-          if (_formKey.currentState.validate())
-            NavigationService.instance.navigateToReplacement("checkmail");
+          if (_formKey.currentState.validate()) {
+            _auth.sendPasswordResetMail(_email);
+          }
         },
         color: dotColor,
         textColor: Colors.white,

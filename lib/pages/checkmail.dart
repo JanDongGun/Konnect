@@ -8,7 +8,6 @@ class CheckMailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
       body: checkMailPageUI(),
     );

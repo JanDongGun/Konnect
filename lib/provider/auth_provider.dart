@@ -33,7 +33,6 @@ class AuthProvider extends ChangeNotifier {
       status = AuthStatus.Authenticated;
       SnackBarSv.instance.showSnackbarSuccess("Loggin hay hay, ${user.email}");
       NavigationService.instance.navigateToReplacement("homepage");
-      // Navigator to homepage
     } catch (e) {
       status = AuthStatus.Error;
       if (e.code == 'invalid-email') {
@@ -43,6 +42,22 @@ class AuthProvider extends ChangeNotifier {
       } else if (e.code == 'wrong-password') {
         SnackBarSv.instance
             .showSnackbarError("Wrong password provided for that user.");
+      }
+    }
+    notifyListeners();
+  }
+
+  void sendPasswordResetMail(String _email) async {
+    notifyListeners();
+    try {
+      await _auth.sendPasswordResetEmail(email: _email);
+      status = AuthStatus.Authenticated;
+      NavigationService.instance.navigateToReplacement("checkmail");
+    } catch (e) {
+      print(e);
+      status = AuthStatus.Error;
+      if (e.code == 'user-not-found') {
+        SnackBarSv.instance.showSnackbarError("Email not found");
       }
     }
     notifyListeners();
