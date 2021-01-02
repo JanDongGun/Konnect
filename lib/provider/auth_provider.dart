@@ -87,22 +87,4 @@ class AuthProvider extends ChangeNotifier {
       SnackBarSv.instance.showSnackbarSuccess('Logged out error');
     }
   }
-
-  void sendEmailVerification(String _email) async {
-    emailStatus = EmailStatus.Sending;
-    notifyListeners();
-    try {
-      user = FirebaseAuth.instance.currentUser;
-      await user.sendEmailVerification();
-      emailStatus = EmailStatus.Sended;
-      NavigationService.instance.navigateToReplacement('checkmail');
-    } catch (e) {
-      print(e);
-      emailStatus = EmailStatus.Error;
-      if (e.code == 'user-not-found') {
-        SnackBarSv.instance.showSnackbarError("Email not found");
-      }
-    }
-    notifyListeners();
-  }
 }
