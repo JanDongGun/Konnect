@@ -359,7 +359,10 @@ class _RegisPageState extends State<RegisPage> {
                             .uploadUserImage(_uid, _image);
                         var _imageURL = await _result.ref.getDownloadURL();
                         await DBService.instance
-                            .createUserInDB(_uid, _name, _email, _imageURL);
+                            .createUserInDB(_uid, _name, _email, _imageURL)
+                            .then((_) {
+                          NavigationService.instance.navigateTo("verify");
+                        });
                       });
                     } else if (_image == null) {
                       SnackBarSv.instance
