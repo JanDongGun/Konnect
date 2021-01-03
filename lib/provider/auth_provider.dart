@@ -65,6 +65,8 @@ class AuthProvider extends ChangeNotifier {
       status = AuthStatus.Error;
       if (e.code == 'user-not-found') {
         SnackBarSv.instance.showSnackbarError("Email not found");
+      } else if (e.code == 'invalid-email') {
+        SnackBarSv.instance.showSnackbarError("invalid email");
       }
     }
     notifyListeners();
