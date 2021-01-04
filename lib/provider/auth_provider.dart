@@ -27,6 +27,7 @@ class AuthProvider extends ChangeNotifier {
 
   AuthProvider() {
     _auth = FirebaseAuth.instance;
+    user = FirebaseAuth.instance.currentUser;
   }
 
   void loginUserWithEmailAndPassword(String _email, String _password) async {
