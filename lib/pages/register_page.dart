@@ -353,17 +353,8 @@ class _RegisPageState extends State<RegisPage> {
                 onPressed: () {
                   setState(() {
                     if (_formKey.currentState.validate() && _image != null) {
-                      _auth.regisUserWithEmailAndPassword(_email, _password,
-                          (String _uid) async {
-                        var _result = await CloudStorageService.instance
-                            .uploadUserImage(_uid, _image);
-                        var _imageURL = await _result.ref.getDownloadURL();
-                        await DBService.instance
-                            .createUserInDB(_uid, _name, _email, _imageURL)
-                            .then((_) {
-                          NavigationService.instance.navigateTo("verify");
-                        });
-                      });
+                      createUser();
+                      NavigationService.instance.navigateToReplacement("login");
                     } else if (_image == null) {
                       SnackBarSv.instance
                           .showSnackbarError('Please insert avatar');
@@ -381,5 +372,14 @@ class _RegisPageState extends State<RegisPage> {
               ),
             ),
           );
+  }
+
+  void createUser() {
+    _auth.regisUserWithEmailAndPassword(_email, _password, (String _uid) async {
+      var _result =
+          await CloudStorageService.instance.uploadUserImage(_uid, _image);
+      var _imageURL = await _result.ref.getDownloadURL();
+      await DBService.instance.createUserInDB(_uid, _name, _email, _imageURL);
+    });
   }
 }
