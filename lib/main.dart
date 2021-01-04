@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:konnect/pages/CheckMail.dart';
-import 'package:konnect/pages/email_verification.dart';
 import 'package:konnect/pages/forgotpass_page.dart';
 import 'package:konnect/pages/homepage.dart';
 import 'package:konnect/pages/login_page.dart';
@@ -29,7 +28,6 @@ class MyApp extends StatelessWidget {
         "regis": (BuildContext _context) => RegisPage(),
         "forgot": (BuildContext _context) => ForgotpassPage(),
         "checkmail": (BuildContext _context) => CheckMailPage(),
-        "verify": (BuildContext _context) => VerifyScreen(),
         "homepage": (BuildContext _context) => HomePage(),
       },
     );
