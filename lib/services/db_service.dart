@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:konnect/models/contact.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DBService {
   static DBService instance = DBService();
@@ -21,6 +22,10 @@ class DBService {
         "image": _imageURL,
         "lastSeen": DateTime.now().toUtc()
       });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
     } catch (e) {
       print(e);
     }
