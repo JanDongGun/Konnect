@@ -104,4 +104,15 @@ class AuthProvider extends ChangeNotifier {
       SnackBarSv.instance.showSnackbarSuccess('Logged out error');
     }
   }
+
+  void updateProfile(
+      String _name, String _url, Future<void> onSuccess(String _uid)) async {
+    try {
+      await user.updateProfile(displayName: _name, photoURL: _url);
+      await onSuccess(user.uid);
+      await NavigationService.instance.navigateToReplacement('homepage');
+    } catch (e) {
+      SnackBarSv.instance.showSnackbarSuccess('Update error');
+    }
+  }
 }
