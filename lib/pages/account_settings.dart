@@ -8,6 +8,7 @@ import 'package:konnect/services/cloud_storage_service.dart';
 import 'package:konnect/services/db_service.dart';
 import 'package:konnect/services/media_service.dart';
 import 'package:konnect/services/navigation_service.dart';
+import 'package:konnect/services/snackbar_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -38,6 +39,9 @@ class _AccSettingsPageState extends State<AccSettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: dotColor,
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       body: Container(
@@ -60,6 +64,7 @@ class _AccSettingsPageState extends State<AccSettingsPage> {
       },
       child: Builder(builder: (BuildContext _context) {
         widget._auth = Provider.of<AuthProvider>(_context);
+        SnackBarSv.instance.buildContext = _context;
         return StreamBuilder<Contact>(
           stream: DBService.instance.getUserData(widget._auth.user.uid),
           builder: (_context, _snapshot) {
@@ -72,12 +77,11 @@ class _AccSettingsPageState extends State<AccSettingsPage> {
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          btnBackWidget(),
                           SizedBox(
-                            height: 50,
+                            height: 30,
                           ),
                           _userImageWidget(_userData.image),
-                          SizedBox(height: 50),
+                          SizedBox(height: 30),
                           _userNameWidget(_userData.name),
                           SizedBox(height: 30),
                           _userEmailWidget(_userData.email),
@@ -94,22 +98,6 @@ class _AccSettingsPageState extends State<AccSettingsPage> {
           },
         );
       }),
-    );
-  }
-
-  Widget btnBackWidget() {
-    return Container(
-      margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
-      height: 30,
-      width: 30,
-      child: GestureDetector(
-          onTap: () {
-            NavigationService.instance.goBack();
-          },
-          child: SvgPicture.asset(
-            "images/back.svg",
-            color: Colors.white54,
-          )),
     );
   }
 
@@ -187,32 +175,39 @@ class _AccSettingsPageState extends State<AccSettingsPage> {
   }
 
   Widget _updateButton() {
-    return Container(
-      height: widget._height * 0.1,
-      width: widget._width,
-      child: FlatButton(
-        onPressed: () {
-          if (name == null) {
-            name = checkname;
-            updateProfile();
-          } else {
-            updateProfile();
-          }
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50),
-        ),
-        color: dotColor,
-        child: Text(
-          'Update',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
+    return widget._auth.status == AuthStatus.Authenticating
+        ? Align(
+            child: CircularProgressIndicator(),
+            alignment: Alignment.center,
+          )
+        : Container(
+            height: widget._height * 0.1,
+            width: widget._width,
+            child: FlatButton(
+              onPressed: () {
+                if (name == null) {
+                  name = checkname;
+                  updateProfile();
+                } else if (image == null) {
+                  SnackBarSv.instance.showSnackbarError("Please pick a image");
+                } else {
+                  updateProfile();
+                }
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              color: dotColor,
+              child: Text(
+                'Update',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          );
   }
 
   void updateProfile() {
