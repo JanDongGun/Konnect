@@ -6,6 +6,7 @@ import 'package:konnect/pages/profilePage.dart';
 import 'package:konnect/pages/searchPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:konnect/provider/auth_provider.dart';
+import 'package:konnect/services/navigation_service.dart';
 import 'package:konnect/services/snackbar_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -126,7 +127,7 @@ class _HomePageState extends State<HomePage>
           MaterialPageRoute(
               builder: (context) => AccSettingsPage(_width, _height)));
     } else if (choice == Constants.PasswordSettings) {
-      print('PasswordSettings');
+      NavigationService.instance.navigateTo("resetpass");
     } else if (choice == Constants.SignOut) {
       _auth.logoutUser(() {});
     }

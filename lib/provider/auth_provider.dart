@@ -55,6 +55,26 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> changePassword(String pass) async {
+    var userr = await _auth.currentUser;
+
+    var authCre =
+        EmailAuthProvider.getCredential(email: userr.email, password: pass);
+
+    try {
+      var authResult = await userr.reauthenticateWithCredential(authCre);
+      return authResult.user != null;
+    } catch (e) {
+      SnackBarSv.instance.showSnackbarError("Password wrong");
+      return false;
+    }
+  }
+
+  Future<void> updatePass(String password) async {
+    var userr = await _auth.currentUser;
+    userr.updatePassword(password);
+  }
+
   void sendPasswordResetMail(String _email) async {
     notifyListeners();
     try {
