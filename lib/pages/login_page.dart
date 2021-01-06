@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:konnect/constant.dart';
 import 'package:konnect/services/snackbar_service.dart';
@@ -158,6 +159,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget emailInputWidget() {
     return TextFormField(
+      inputFormatters: [
+        new FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9@.]")),
+      ],
       validator: (_input) {
         return _input.contains("@") && _input.length > 1
             ? null

@@ -43,6 +43,11 @@ dev_dependencies:
   provider: ^4.3.2+3
   timeago: ^2.0.29
   flutter_spinkit: ^4.1.2+1
+  flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+  image_path: "icons/logo-removebg-preview.png" 
+  android: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:konnect/constant.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:konnect/services/navigation_service.dart';
@@ -62,7 +63,7 @@ class _ForgotpassPageState extends State<ForgotpassPage> {
               ),
               emailForgotPassWidget(),
               SizedBox(
-                height: 40,
+                height: 130,
               ),
               sendMailButtonWidget(),
               SizedBox(
@@ -136,6 +137,9 @@ class _ForgotpassPageState extends State<ForgotpassPage> {
   Widget emailForgotPassWidget() {
     return Container(
       child: TextFormField(
+        inputFormatters: [
+          new FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9@.]")),
+        ],
         validator: (_input) {
           return _input.contains("@") ? null : "Please type a valid email";
         },
