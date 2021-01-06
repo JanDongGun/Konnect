@@ -3,6 +3,9 @@ import 'package:konnect/constant.dart';
 import 'package:konnect/pages/RecentConversationPage.dart';
 import 'package:konnect/pages/profilePage.dart';
 import 'package:konnect/pages/searchPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:konnect/provider/auth_provider.dart';
+import 'package:konnect/services/snackbar_service.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,6 +18,8 @@ class _HomePageState extends State<HomePage>
   double _height;
   double _width;
 
+  AuthProvider _auth = AuthProvider.instance;
+
   _HomePageState() {
     _tabController = TabController(length: 3, vsync: this, initialIndex: 1);
   }
@@ -25,6 +30,23 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            color: backgroundColor,
+            onSelected: (val) => choiceAction(val, context),
+            itemBuilder: (BuildContext context) {
+              return Constants.choices.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(
+                    choice,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
+              }).toList();
+            },
+          )
+        ],
         centerTitle: true,
         backgroundColor: backgroundColor,
         title: Container(
@@ -94,5 +116,15 @@ class _HomePageState extends State<HomePage>
         ProfilePage(_width, _height)
       ],
     );
+  }
+
+  void choiceAction(String choice, BuildContext context) {
+    if (choice == Constants.AccountSettings) {
+      print('AccountSettings');
+    } else if (choice == Constants.PasswordSettings) {
+      print('PasswordSettings');
+    } else if (choice == Constants.SignOut) {
+      _auth.logoutUser(() {});
+    }
   }
 }

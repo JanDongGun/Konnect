@@ -48,12 +48,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         _userImageWidget(_userData.image),
-                        SizedBox(height: 15),
+                        SizedBox(height: 50),
                         _userNameWidget(_userData.name),
                         SizedBox(height: 15),
                         _userEmailWidget(_userData.email),
-                        Spacer(),
-                        _logoutButton(),
                       ],
                     ),
                   ),
@@ -90,11 +88,10 @@ class _ProfilePageState extends State<ProfilePage> {
         _userName,
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontFamily: "Roboto",
-          fontWeight: FontWeight.w400
-        ),
+            color: Colors.white,
+            fontSize: 30,
+            fontFamily: "Roboto",
+            fontWeight: FontWeight.w400),
       ),
     );
   }
@@ -110,29 +107,6 @@ class _ProfilePageState extends State<ProfilePage> {
           fontFamily: "Roboto",
           color: Colors.white70,
           fontSize: 15,
-        ),
-      ),
-    );
-  }
-
-  Widget _logoutButton() {
-    return Container(
-      height: widget._height * 0.1,
-      width: widget._width,
-    
-      child: FlatButton(
-        onPressed: () {
-          widget._auth.logoutUser(() {});
-        },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50),),
-        color: dotColor,
-        child: Text(
-          'Log Out',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-          ),
         ),
       ),
     );
