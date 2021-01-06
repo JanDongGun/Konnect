@@ -12,6 +12,8 @@ class ResetPassPage extends StatefulWidget {
 
 class _ResetPassPageState extends State<ResetPassPage> {
   bool _showPass = false;
+  bool _showPass1 = false;
+  bool _showPass2 = false;
 
   GlobalKey<FormState> _formKey;
 
@@ -32,9 +34,6 @@ class _ResetPassPageState extends State<ResetPassPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: dotColor,
-        title: Text(
-          "...",
-        ),
       ),
       backgroundColor: backgroundColor,
       body: Container(
@@ -118,11 +117,11 @@ class _ResetPassPageState extends State<ResetPassPage> {
           children: [
             passWordCurrent(),
             SizedBox(
-              height: 20,
+              height: 15,
             ),
             newPassword(),
             SizedBox(
-              height: 8,
+              height: 15,
             ),
             repeatPassword()
           ],
@@ -171,7 +170,7 @@ class _ResetPassPageState extends State<ResetPassPage> {
   Widget newPassword() {
     return TextFormField(
       style: TextStyle(color: Colors.white, fontSize: 15),
-      obscureText: !_showPass,
+      obscureText: !_showPass1,
       validator: (_input) {
         return _input.length >= 6 ? null : "Please type password";
       },
@@ -193,7 +192,7 @@ class _ResetPassPageState extends State<ResetPassPage> {
         suffixIcon: GestureDetector(
           onTap: () {
             setState(() {
-              _showPass = !_showPass;
+              _showPass1 = !_showPass1;
             });
           },
           child: Icon(
@@ -208,7 +207,7 @@ class _ResetPassPageState extends State<ResetPassPage> {
   Widget repeatPassword() {
     return TextFormField(
       style: TextStyle(color: Colors.white, fontSize: 15),
-      obscureText: !_showPass,
+      obscureText: !_showPass2,
       validator: (_input) {
         return _input.length >= 6 && _input == newpass
             ? null
@@ -232,7 +231,7 @@ class _ResetPassPageState extends State<ResetPassPage> {
         suffixIcon: GestureDetector(
           onTap: () {
             setState(() {
-              _showPass = !_showPass;
+              _showPass2 = !_showPass2;
             });
           },
           child: Icon(
@@ -249,7 +248,8 @@ class _ResetPassPageState extends State<ResetPassPage> {
       height: 70,
       width: double.infinity,
       child: FlatButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(2000)),
         onPressed: () async {
           checkCurrentPasswordValid = await validatorCurPass(_password);
           if (_formKey.currentState.validate() && checkCurrentPasswordValid) {
