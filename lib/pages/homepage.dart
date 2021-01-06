@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:konnect/constant.dart';
 import 'package:konnect/pages/RecentConversationPage.dart';
+import 'package:konnect/pages/account_settings.dart';
 import 'package:konnect/pages/profilePage.dart';
 import 'package:konnect/pages/searchPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -120,7 +121,10 @@ class _HomePageState extends State<HomePage>
 
   void choiceAction(String choice, BuildContext context) {
     if (choice == Constants.AccountSettings) {
-      print('AccountSettings');
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AccSettingsPage(_width, _height)));
     } else if (choice == Constants.PasswordSettings) {
       print('PasswordSettings');
     } else if (choice == Constants.SignOut) {
