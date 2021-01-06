@@ -83,6 +83,7 @@ class AuthProvider extends ChangeNotifier {
 
       user = _result.user;
       status = AuthStatus.Authenticated;
+      NavigationService.instance.navigateToReplacement("login");
       await onSuccess(user.uid);
     } catch (e) {
       status = AuthStatus.Error;

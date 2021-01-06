@@ -354,7 +354,6 @@ class _RegisPageState extends State<RegisPage> {
                   setState(() {
                     if (_formKey.currentState.validate() && _image != null) {
                       createUser();
-                      NavigationService.instance.navigateToReplacement("login");
                     } else if (_image == null) {
                       SnackBarSv.instance
                           .showSnackbarError('Please insert avatar');
