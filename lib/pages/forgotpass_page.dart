@@ -137,9 +137,7 @@ class _ForgotpassPageState extends State<ForgotpassPage> {
   Widget emailForgotPassWidget() {
     return Container(
       child: TextFormField(
-        inputFormatters: [
-          new FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9@.]")),
-        ],
+        keyboardType: TextInputType.emailAddress,
         validator: (_input) {
           return _input.contains("@") ? null : "Please type a valid email";
         },
@@ -165,7 +163,9 @@ class _ForgotpassPageState extends State<ForgotpassPage> {
   }
 
   Widget sendMailButtonWidget() {
-    return SizedBox(
+    return _auth.status == AuthStatus.Authenticating
+        ? Align(alignment: Alignment.center, child: CircularProgressIndicator())
+    : SizedBox(
       height: 60,
       width: double.infinity,
       child: FlatButton(

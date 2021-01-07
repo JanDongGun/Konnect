@@ -244,7 +244,9 @@ class _ResetPassPageState extends State<ResetPassPage> {
   }
 
   Widget saveButton() {
-    return SizedBox(
+    return _auth.emailStatus == EmailStatus.Sending
+        ? Align(alignment: Alignment.center, child: CircularProgressIndicator()) 
+    :SizedBox(
       height: 70,
       width: double.infinity,
       child: FlatButton(
