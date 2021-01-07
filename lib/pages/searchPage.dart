@@ -27,15 +27,18 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _searchPageUI() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _userSearchField(),
-        _usersListView(),
-      ],
-    );
+    return Builder(builder: (BuildContext _context) {
+      widget._auth = Provider.of<AuthProvider>(_context);
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _userSearchField(),
+          _usersListView(),
+        ],
+      );
+    });
   }
 
   Widget _userSearchField() {
@@ -67,11 +70,11 @@ class _SearchPageState extends State<SearchPage> {
         itemCount: 1,
         itemBuilder: (BuildContext _context, int _index) {
           return ListTile(
-            title: Text("Hussain Mustafa",style: TextStyle(
-              fontSize: 15,
-                  fontFamily: "Roboto",
-                  color: Colors.white70
-            ),),
+            title: Text(
+              "Hussain Mustafa",
+              style: TextStyle(
+                  fontSize: 15, fontFamily: "Roboto", color: Colors.white70),
+            ),
             leading: Container(
               width: 50,
               height: 50,
@@ -88,22 +91,24 @@ class _SearchPageState extends State<SearchPage> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text("Lastseen",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontFamily: "Roboto",
-                  color: Colors.white70,
-                  ),),
-                  Text("About an hour ago",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontFamily: "Roboto",
-                  color: Colors.white70,
-                  ),),
+                Text(
+                  "Lastseen",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "Roboto",
+                    color: Colors.white70,
+                  ),
+                ),
+                Text(
+                  "About an hour ago",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "Roboto",
+                    color: Colors.white70,
+                  ),
+                ),
               ],
             ),
-
-
           );
         },
       ),
