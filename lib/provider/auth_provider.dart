@@ -61,14 +61,10 @@ class AuthProvider extends ChangeNotifier {
     var userr = await _auth.currentUser;
 
     var authCre =
-<<<<<<< HEAD
         EmailAuthProvider.credential(email: userr.email, password: pass);
 
-=======
-        EmailAuthProvider.getCredential(email: userr.email, password: pass);
-    emailStatus = EmailStatus.Sending;
     notifyListeners();
->>>>>>> bc6590fd2f461b87b9e826ec844b73b988cd6cd0
+
     try {
       var authResult = await userr.reauthenticateWithCredential(authCre);
       return authResult.user != null;

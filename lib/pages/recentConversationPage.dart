@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:konnect/constant.dart';
 import 'package:konnect/models/conversation.dart';
+import 'package:konnect/pages/conversation_page.dart';
 import 'package:konnect/provider/auth_provider.dart';
 import 'package:konnect/services/db_service.dart';
+import 'package:konnect/services/navigation_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -48,7 +50,17 @@ class _RecentConversationPageState extends State<RecentConversationPage> {
                         itemCount: _data.length,
                         itemBuilder: (_context, _index) {
                           return ListTile(
-                            onTap: () {},
+                            onTap: () {
+                              NavigationService.instance.navigateToRoute(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext _context) {
+                                return ConversationPage(
+                                    _data[_index].conversationID,
+                                    _data[_index].id,
+                                    _data[_index].image,
+                                    _data[_index].name);
+                              }));
+                            },
                             title: Text(
                               _data[_index].name,
                               style: TextStyle(

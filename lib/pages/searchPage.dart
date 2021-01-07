@@ -25,12 +25,14 @@ class _SearchPageState extends State<SearchPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget._width,
-      height: widget._height,
-      child: ChangeNotifierProvider<AuthProvider>.value(
-        value: AuthProvider.instance,
-        child: _searchPageUI(),
+    return SingleChildScrollView(
+      child: Container(
+        width: widget._width,
+        height: widget._height,
+        child: ChangeNotifierProvider<AuthProvider>.value(
+          value: AuthProvider.instance,
+          child: _searchPageUI(),
+        ),
       ),
     );
   }
@@ -54,7 +56,7 @@ class _SearchPageState extends State<SearchPage> {
     return Container(
       height: this.widget._height * 0.1,
       width: widget._width,
-      padding: EdgeInsets.symmetric(vertical: widget._height * 0.025),
+      margin: EdgeInsets.only(top: widget._height * 0.025),
       child: TextField(
         autocorrect: false,
         style: TextStyle(color: Colors.white),
@@ -96,7 +98,7 @@ class _SearchPageState extends State<SearchPage> {
                       var _isUserActive = _user.lastseen.toDate().isAfter(
                           _currentTime.subtract(Duration(minutes: 20)));
                       return Container(
-                        margin: EdgeInsets.only(top: 15),
+                        margin: EdgeInsets.only(bottom: 15),
                         child: ListTile(
                           title: Text(
                             _user.name,

@@ -73,7 +73,6 @@ class DBService {
     });
   }
 
-<<<<<<< HEAD
   Stream<List<Contact>> getUsersInDB(String _searchName) {
     var _ref = _db
         .collection(_userCollection)
@@ -85,8 +84,11 @@ class DBService {
       }).toList();
     });
   }
-=======
-  
 
->>>>>>> bc6590fd2f461b87b9e826ec844b73b988cd6cd0
+  Stream getConversation(String _conversationID) {
+    var _ref = _db.collection(_conversastionCollection).doc(_conversationID);
+    return _ref.snapshots().map((_snapshot) {
+      return Conversation.fromFirestore(_snapshot);
+    });
+  }
 }
