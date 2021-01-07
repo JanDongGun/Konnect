@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:konnect/models/contact.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:konnect/models/conversation.dart';
+import 'package:konnect/models/message.dart';
 
 class DBService {
   static DBService instance = DBService();
@@ -87,6 +88,23 @@ class DBService {
     var _ref = _db.collection(_conversastionCollection).doc(_conversationID);
     return _ref.snapshots().map((_snapshot) {
       return Conversation.fromFirestore(_snapshot);
+    });
+  }
+
+  Future<void> sendMessage(String _conversationID, Message _message) {
+    var _ref = _db.collection(_conversastionCollection).doc(_conversationID);
+    var _messageType = _message.type == MessageType.Image ? "image" : "text";
+    return _ref.update({
+      "messages": FieldValue.arrayUnion(
+        [
+          {
+            "message": _message.content,
+            "senderID": _message.senderID,
+            "timestamp": _message.timestamp,
+            "type": _messageType,
+          }
+        ],
+      )
     });
   }
 }

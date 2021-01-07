@@ -26,6 +26,15 @@ class ConversationPage extends StatefulWidget {
 class _ConversationPageState extends State<ConversationPage> {
   double _width;
   double _height;
+
+  GlobalKey<FormState> _formKey;
+  String _message;
+
+  _ConversationPageState() {
+    _formKey = GlobalKey<FormState>();
+    _message = "";
+  }
+
   @override
   Widget build(BuildContext context) {
     _width = MediaQuery.of(context).size.width;
@@ -185,16 +194,17 @@ class _ConversationPageState extends State<ConversationPage> {
         borderRadius: BorderRadius.circular(200),
       ),
       child: Form(
+          key: _formKey,
           child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _messageTextField(),
-          _sendMessageButton(_context),
-          _imageMessageButton(),
-        ],
-      )),
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _messageTextField(),
+              _sendMessageButton(_context),
+              _imageMessageButton(),
+            ],
+          )),
     );
   }
 
@@ -213,8 +223,11 @@ class _ConversationPageState extends State<ConversationPage> {
             }
             return null;
           },
-          onChanged: (_input) {},
-          onSaved: (_input) {},
+          onChanged: (_input) {
+            setState(() {
+              _message = _input;
+            });
+          },
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: "Type a message",
@@ -238,7 +251,20 @@ class _ConversationPageState extends State<ConversationPage> {
           Icons.send,
           color: Colors.white,
         ),
-        onPressed: () {},
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            DBService.instance.sendMessage(
+              widget._conversationID,
+              Message(
+                  content: _message,
+                  timestamp: Timestamp.now(),
+                  senderID: widget._auth.user.uid,
+                  type: MessageType.Text),
+            );
+          }
+          _formKey.currentState.reset();
+          FocusScope.of(context).unfocus();
+        },
       ),
     );
   }
