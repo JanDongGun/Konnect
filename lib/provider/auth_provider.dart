@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:konnect/services/db_service.dart';
 import '../services/navigation_service.dart';
 import '../services/snackbar_service.dart';
 
@@ -40,6 +41,7 @@ class AuthProvider extends ChangeNotifier {
       user = _result.user;
       status = AuthStatus.Authenticated;
       SnackBarSv.instance.showSnackbarSuccess("Welcome, ${user.email}");
+      await DBService.instance.updateUserLastSeenTime(user.uid);
       NavigationService.instance.navigateToReplacement("homepage");
     } catch (e) {
       status = AuthStatus.Error;
@@ -59,7 +61,7 @@ class AuthProvider extends ChangeNotifier {
     var userr = await _auth.currentUser;
 
     var authCre =
-        EmailAuthProvider.getCredential(email: userr.email, password: pass);
+        EmailAuthProvider.credential(email: userr.email, password: pass);
 
     try {
       var authResult = await userr.reauthenticateWithCredential(authCre);
@@ -103,8 +105,11 @@ class AuthProvider extends ChangeNotifier {
 
       user = _result.user;
       status = AuthStatus.Authenticated;
-      NavigationService.instance.navigateToReplacement("login");
+      SnackBarSv.instance.showSnackbarSuccess("Register Success");
+
       await onSuccess(user.uid);
+      await DBService.instance.updateUserLastSeenTime(user.uid);
+      NavigationService.instance.navigateToReplacement("login");
     } catch (e) {
       status = AuthStatus.Error;
       user = null;

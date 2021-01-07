@@ -42,48 +42,61 @@ class _RecentConversationPageState extends State<RecentConversationPage> {
                 DBService.instance.getUserConversation(widget._auth.user.uid),
             builder: (_context, _snapshot) {
               var _data = _snapshot.data;
-              return _snapshot.hasData
-                  ? ListView.builder(
-                      itemCount: _data.length,
-                      itemBuilder: (_context, _index) {
-                        return ListTile(
-                          onTap: () {},
-                          title: Text(
-                            _data[_index].name,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "Roboto",
-                              color: Colors.white,
-                            ),
-                          ),
-                          subtitle: Text(
-                            _data[_index].lastMessage,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "Roboto",
-                              color: Colors.white,
-                            ),
-                          ),
-                          leading: Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    _data[_index].image),
+              if (_data != null) {
+                return _data.length != 0
+                    ? ListView.builder(
+                        itemCount: _data.length,
+                        itemBuilder: (_context, _index) {
+                          return ListTile(
+                            onTap: () {},
+                            title: Text(
+                              _data[_index].name,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontFamily: "Roboto",
+                                color: Colors.white,
                               ),
                             ),
+                            subtitle: Text(
+                              _data[_index].lastMessage,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontFamily: "Roboto",
+                                color: Colors.white,
+                              ),
+                            ),
+                            leading: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(_data[_index].image),
+                                ),
+                              ),
+                            ),
+                            trailing: _listTitleTrailingWidgets(
+                                _data[_index].timestamp),
+                          );
+                        },
+                      )
+                    : Align(
+                        child: Text(
+                          "No conversations Yet!",
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontFamily: "Roboto",
+                            fontSize: 15,
                           ),
-                          trailing: _listTitleTrailingWidgets(_data[_index].timestamp),
-                        );
-                      },
-                    )
-                  : SpinKitWanderingCubes(
-                      color: dotColor,
-                      size: 50,
-                    );
+                        ),
+                      );
+              } else {
+                return SpinKitWanderingCubes(
+                  color: dotColor,
+                  size: 50,
+                );
+              }
             },
           ));
     });
@@ -96,6 +109,14 @@ class _RecentConversationPageState extends State<RecentConversationPage> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
+          "Last message",
+          style: TextStyle(
+            fontSize: 15,
+            fontFamily: "Roboto",
+            color: Colors.white70,
+          ),
+        ),
+        Text(
           timeago.format(_lastMessageTimestamp.toDate()),
           style: TextStyle(
             fontSize: 15,
@@ -103,11 +124,6 @@ class _RecentConversationPageState extends State<RecentConversationPage> {
             color: Colors.white70,
           ),
         ),
-        Text("Last message",style: TextStyle(
-          fontSize: 15,
-            fontFamily: "Roboto",
-            color: Colors.white70,
-        ),),
       ],
     );
   }
