@@ -159,9 +159,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget emailInputWidget() {
     return TextFormField(
-      inputFormatters: [
-        new FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9@.]")),
-      ],
+      keyboardType: TextInputType.emailAddress,
       validator: (_input) {
         return _input.contains("@") && _input.length > 1
             ? null

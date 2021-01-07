@@ -60,14 +60,16 @@ class AuthProvider extends ChangeNotifier {
 
     var authCre =
         EmailAuthProvider.getCredential(email: userr.email, password: pass);
-
+    emailStatus = EmailStatus.Sending;
+    notifyListeners();
     try {
       var authResult = await userr.reauthenticateWithCredential(authCre);
       return authResult.user != null;
     } catch (e) {
+      emailStatus = EmailStatus.Error;
       SnackBarSv.instance.showSnackbarError("Password wrong");
-      return false;
     }
+    notifyListeners();
   }
 
   Future<void> updatePass(String password) async {
@@ -76,6 +78,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void sendPasswordResetMail(String _email) async {
+    status = AuthStatus.Authenticating;
     notifyListeners();
     try {
       await _auth.sendPasswordResetEmail(email: _email);
