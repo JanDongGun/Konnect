@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:konnect/constant.dart';
+import 'package:konnect/pages/conversation_page.dart';
 import 'package:konnect/provider/auth_provider.dart';
 import 'package:konnect/services/db_service.dart';
+import 'package:konnect/services/navigation_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -94,12 +96,24 @@ class _SearchPageState extends State<SearchPage> {
                     itemCount: _userData.length,
                     itemBuilder: (BuildContext _context, int _index) {
                       var _user = _userData[_index];
+                      var _recepientID = _user.id;
                       var _currentTime = DateTime.now();
                       var _isUserActive = _user.lastseen.toDate().isAfter(
                           _currentTime.subtract(Duration(minutes: 20)));
                       return Container(
                         margin: EdgeInsets.only(bottom: 15),
                         child: ListTile(
+                          onTap: () {
+                            DBService.instance.createOrGetConversation(
+                                widget._auth.user.uid, _recepientID,
+                                (String _conversationID) {
+                              NavigationService.instance.navigateToRoute(
+                                  MaterialPageRoute(builder: (_context) {
+                                return ConversationPage(_conversationID,
+                                    _recepientID, _user.image, _user.name);
+                              }));
+                            });
+                          },
                           title: Text(
                             _user.name,
                             style: TextStyle(

@@ -99,15 +99,25 @@ class _ConversationPageState extends State<ConversationPage> {
               );
               var _conversationData = _snaphot.data;
               if (_conversationData != null) {
-                return ListView.builder(
-                    controller: _listViewController,
-                    itemCount: _conversationData.messages.length,
-                    itemBuilder: (_context, _index) {
-                      var _message = _conversationData.messages[_index];
-                      bool _isOwnMessage =
-                          _message.senderID == widget._auth.user.uid;
-                      return _messageListViewChild(_isOwnMessage, _message);
-                    });
+                if (_conversationData.messages.length != 0) {
+                  return ListView.builder(
+                      controller: _listViewController,
+                      itemCount: _conversationData.messages.length,
+                      itemBuilder: (_context, _index) {
+                        var _message = _conversationData.messages[_index];
+                        bool _isOwnMessage =
+                            _message.senderID == widget._auth.user.uid;
+                        return _messageListViewChild(_isOwnMessage, _message);
+                      });
+                } else {
+                  return Align(
+                    child: Text("Let's start conversation!",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Roboto",
+                        )),
+                  );
+                }
               } else {
                 return SpinKitWanderingCubes(
                   color: dotColor,

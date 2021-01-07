@@ -106,4 +106,32 @@ class DBService {
       )
     });
   }
+
+  Future<void> createOrGetConversation(String _currentID, String _recepientID,
+      Future<void> _onSuccess(String _conversationID)) async {
+    var _ref = _db.collection(_conversastionCollection);
+    var _userConversationRef = _db
+        .collection(_userCollection)
+        .doc(_currentID)
+        .collection(_conversastionCollection);
+    try {
+      var conversation = await _userConversationRef.doc(_recepientID).get();
+
+      if (conversation.data() != null) {
+        return _onSuccess(conversation.data()["conversationID"]);
+      } else {
+        var _conversationRef = _ref.doc();
+
+        await _conversationRef.set({
+          "members": [_currentID, _recepientID],
+          "ownerID": _currentID,
+          "messages": [],
+        });
+
+        return _onSuccess(_conversationRef.id);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }

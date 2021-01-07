@@ -46,6 +46,9 @@ class _RecentConversationPageState extends State<RecentConversationPage> {
             builder: (_context, _snapshot) {
               var _data = _snapshot.data;
               if (_data != null) {
+                _data.removeWhere((element) {
+                  return element.timestamp == null;
+                });
                 return _data.length != 0
                     ? ListView.builder(
                         itemCount: _data.length,
