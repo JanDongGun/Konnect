@@ -338,7 +338,9 @@ class _RegisPageState extends State<RegisPage> {
   Widget signUpButtonWidget() {
     return _auth.status == AuthStatus.Authenticating
         ? Align(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              backgroundColor: dotColor,
+            ),
             alignment: Alignment.center,
           )
         : Container(

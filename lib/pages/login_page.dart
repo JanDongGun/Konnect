@@ -277,7 +277,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget signinButtonWidget() {
     return _auth.status == AuthStatus.Authenticating
-        ? Align(alignment: Alignment.center, child: CircularProgressIndicator())
+        ? Align(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(
+              backgroundColor: dotColor,
+            ))
         : SizedBox(
             height: 70,
             width: double.infinity,

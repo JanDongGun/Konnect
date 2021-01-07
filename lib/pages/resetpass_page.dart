@@ -245,30 +245,35 @@ class _ResetPassPageState extends State<ResetPassPage> {
 
   Widget saveButton() {
     return _auth.emailStatus == EmailStatus.Sending
-        ? Align(alignment: Alignment.center, child: CircularProgressIndicator()) 
-    :SizedBox(
-      height: 70,
-      width: double.infinity,
-      child: FlatButton(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(2000)),
-        onPressed: () async {
-          checkCurrentPasswordValid = await validatorCurPass(_password);
-          if (_formKey.currentState.validate() && checkCurrentPasswordValid) {
-            updatePassWord(newpass);
-            NavigationService.instance.goBack();
-          }
-        },
-        color: dotColor,
-        textColor: Colors.white,
-        child: Text("Save",
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'Roboto',
-                fontSize: 22,
-                fontWeight: FontWeight.bold)),
-      ),
-    );
+        ? Align(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(
+              backgroundColor: dotColor,
+            ))
+        : SizedBox(
+            height: 70,
+            width: double.infinity,
+            child: FlatButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2000)),
+              onPressed: () async {
+                checkCurrentPasswordValid = await validatorCurPass(_password);
+                if (_formKey.currentState.validate() &&
+                    checkCurrentPasswordValid) {
+                  updatePassWord(newpass);
+                  NavigationService.instance.goBack();
+                }
+              },
+              color: dotColor,
+              textColor: Colors.white,
+              child: Text("Save",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Roboto',
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold)),
+            ),
+          );
   }
 
   Future<bool> validatorCurPass(String password) async {
