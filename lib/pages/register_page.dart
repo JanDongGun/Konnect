@@ -27,6 +27,8 @@ class _RegisPageState extends State<RegisPage> {
   String _name;
   String _email;
   String _password;
+  String _defaultImage =
+      "https://scontent.fsgn4-1.fna.fbcdn.net/v/t1.15752-9/129845629_994232164410256_7458584177989089590_n.png?_nc_cat=103&ccb=2&_nc_sid=ae9488&_nc_ohc=FpOUV-aaxzUAX-Fce46&_nc_ht=scontent.fsgn4-1.fna&oh=56c6c9434034e0ab9a4f999a125db030&oe=601B1D99";
 
   _RegisPageState() {
     _formKey = GlobalKey<FormState>();
@@ -354,11 +356,8 @@ class _RegisPageState extends State<RegisPage> {
                     borderRadius: BorderRadius.circular(2000)),
                 onPressed: () {
                   setState(() {
-                    if (_formKey.currentState.validate() && _image != null) {
+                    if (_formKey.currentState.validate()) {
                       createUser();
-                    } else if (_image == null) {
-                      SnackBarSv.instance
-                          .showSnackbarError('Please insert avatar');
                     }
                   });
                 },
@@ -377,10 +376,15 @@ class _RegisPageState extends State<RegisPage> {
 
   void createUser() {
     _auth.regisUserWithEmailAndPassword(_email, _password, (String _uid) async {
-      var _result =
-          await CloudStorageService.instance.uploadUserImage(_uid, _image);
-      var _imageURL = await _result.ref.getDownloadURL();
-      await DBService.instance.createUserInDB(_uid, _name, _email, _imageURL);
+      if (_image != null) {
+        var _result =
+            await CloudStorageService.instance.uploadUserImage(_uid, _image);
+        var _imageURL = await _result.ref.getDownloadURL();
+        await DBService.instance.createUserInDB(_uid, _name, _email, _imageURL);
+      } else {
+        await DBService.instance
+            .createUserInDB(_uid, _name, _email, _defaultImage);
+      }
     });
   }
 }
