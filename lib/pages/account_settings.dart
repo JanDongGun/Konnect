@@ -181,7 +181,7 @@ class _AccSettingsPageState extends State<AccSettingsPage> {
             alignment: Alignment.center,
           )
         : Container(
-            height: widget._height * 0.1,
+            height: widget._height * 0.09,
             width: widget._width,
             child: FlatButton(
               onPressed: () {
@@ -195,13 +195,13 @@ class _AccSettingsPageState extends State<AccSettingsPage> {
                 }
               },
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
+                borderRadius: BorderRadius.circular(2000),
               ),
               color: dotColor,
               child: Text(
                 'Update',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 22,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),

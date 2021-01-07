@@ -70,7 +70,7 @@ class StartedPage extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: dotColor,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(2000),
               ),
               child: Row(
                 children: [
@@ -84,7 +84,7 @@ class StartedPage extends StatelessWidget {
                         height: 90,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(2000),
                         ),
                         child: Text(
                           "Sign up",

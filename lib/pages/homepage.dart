@@ -57,10 +57,10 @@ class _HomePageState extends State<HomePage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "konnect",
+                "Konnect",
                 style: TextStyle(
                     fontFamily: "Roboto",
-                    fontSize: 25,
+                    fontSize: 23,
                     color: Colors.white,
                     letterSpacing: 3,
                     fontWeight: FontWeight.w900),
