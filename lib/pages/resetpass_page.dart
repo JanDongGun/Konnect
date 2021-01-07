@@ -211,7 +211,7 @@ class _ResetPassPageState extends State<ResetPassPage> {
       validator: (_input) {
         return _input.length >= 6 && _input == newpass
             ? null
-            : "Please type password";
+            : "Please enter the same password";
       },
       onSaved: (_input) {
         rpPass = _input;

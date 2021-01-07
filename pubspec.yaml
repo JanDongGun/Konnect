@@ -46,7 +46,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.8.1
 
 flutter_icons:
-  image_path: "icons/logo-removebg-preview.png" 
+  image_path: "icons/Untitled.png"
   android: true
 
 # For information on the generic Dart part of this file, see the

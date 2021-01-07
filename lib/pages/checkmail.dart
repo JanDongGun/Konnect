@@ -96,7 +96,8 @@ class CheckMailPage extends StatelessWidget {
       height: 60,
       width: double.infinity,
       child: FlatButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(2000)),
         onPressed: () {
           NavigationService.instance.navigateToReplacement("login");
         },

@@ -285,7 +285,7 @@ class _LoginPageState extends State<LoginPage> {
             width: double.infinity,
             child: FlatButton(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
+                  borderRadius: BorderRadius.circular(2000)),
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _auth.loginUserWithEmailAndPassword(_email, _password);

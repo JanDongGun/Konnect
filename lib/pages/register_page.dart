@@ -349,7 +349,7 @@ class _RegisPageState extends State<RegisPage> {
               width: double.infinity,
               child: FlatButton(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
+                    borderRadius: BorderRadius.circular(2000)),
                 onPressed: () {
                   setState(() {
                     if (_formKey.currentState.validate() && _image != null) {
