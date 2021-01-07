@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:konnect/constant.dart';
 import 'package:konnect/models/conversation.dart';
+import 'package:konnect/models/message.dart';
 import 'package:konnect/pages/conversation_page.dart';
 import 'package:konnect/provider/auth_provider.dart';
 import 'package:konnect/services/db_service.dart';
@@ -70,7 +71,9 @@ class _RecentConversationPageState extends State<RecentConversationPage> {
                               ),
                             ),
                             subtitle: Text(
-                              _data[_index].lastMessage,
+                              _data[_index].type == MessageType.Text
+                                  ? _data[_index].lastMessage
+                                  : "Attachment: image",
                               style: TextStyle(
                                 fontSize: 15,
                                 fontFamily: "Roboto",

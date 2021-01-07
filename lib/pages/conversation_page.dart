@@ -1,12 +1,13 @@
-import 'dart:ffi';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:konnect/constant.dart';
 import 'package:konnect/models/message.dart';
 import 'package:konnect/provider/auth_provider.dart';
+import 'package:konnect/services/cloud_storage_service.dart';
 import 'package:konnect/services/db_service.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:konnect/services/media_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,7 @@ class ConversationPage extends StatefulWidget {
 class _ConversationPageState extends State<ConversationPage> {
   double _width;
   double _height;
+  ScrollController _listViewController;
 
   GlobalKey<FormState> _formKey;
   String _message;
@@ -33,6 +35,7 @@ class _ConversationPageState extends State<ConversationPage> {
   _ConversationPageState() {
     _formKey = GlobalKey<FormState>();
     _message = "";
+    _listViewController = ScrollController();
   }
 
   @override
@@ -87,9 +90,17 @@ class _ConversationPageState extends State<ConversationPage> {
         child: StreamBuilder(
             stream: DBService.instance.getConversation(widget._conversationID),
             builder: (_context, _snaphot) {
+              Timer(
+                Duration(milliseconds: 100),
+                () => {
+                  _listViewController
+                      .jumpTo(_listViewController.position.maxScrollExtent),
+                },
+              );
               var _conversationData = _snaphot.data;
               if (_conversationData != null) {
                 return ListView.builder(
+                    controller: _listViewController,
                     itemCount: _conversationData.messages.length,
                     itemBuilder: (_context, _index) {
                       var _message = _conversationData.messages[_index];
@@ -119,8 +130,11 @@ class _ConversationPageState extends State<ConversationPage> {
             SizedBox(
               width: 15,
             ),
-            _textMessageBubble(
-                _isOwnMessage, _message.content, _message.timestamp),
+            _message.type == MessageType.Text
+                ? _textMessageBubble(
+                    _isOwnMessage, _message.content, _message.timestamp)
+                : _imageMessageBubble(
+                    _isOwnMessage, _message.content, _message.timestamp)
           ],
         ));
   }
@@ -148,14 +162,13 @@ class _ConversationPageState extends State<ConversationPage> {
         ? [dotColor, Color(0xFF38f9d7)]
         : [Color.fromRGBO(69, 69, 69, 1), Color.fromRGBO(43, 43, 43, 1)];
     return Container(
-      width: _width * 0.7,
-      height: _height * 0.1,
-      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+      width: _width * 0.6,
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(2000),
+        borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(
           colors: _colorScheme,
-          stops: [0.3, 1],
+          stops: [0.6, 1],
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
         ),
@@ -172,6 +185,55 @@ class _ConversationPageState extends State<ConversationPage> {
               color: Colors.white,
               fontFamily: "Roboto",
             ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            timeago.format(_timestamp.toDate()),
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Roboto",
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _imageMessageBubble(
+      bool _isOwnMessage, String _imgUrl, Timestamp _timestamp) {
+    List<Color> _colorScheme = _isOwnMessage
+        ? [dotColor, Color(0xFF38f9d7)]
+        : [Color.fromRGBO(69, 69, 69, 1), Color.fromRGBO(43, 43, 43, 1)];
+    return Container(
+      width: _width * 0.7,
+      height: _height * 0.48,
+      margin: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          colors: _colorScheme,
+          stops: [0.3, 1],
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            height: _height * 0.4,
+            width: _width * 0.7,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                image: DecorationImage(
+                  image: NetworkImage(_imgUrl),
+                  fit: BoxFit.cover,
+                )),
           ),
           Text(
             timeago.format(_timestamp.toDate()),
@@ -274,7 +336,22 @@ class _ConversationPageState extends State<ConversationPage> {
       height: _height * 0.05,
       width: _height * 0.05,
       child: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          var _image = await MediaService.instance.getImageInLibary();
+          if (_image != null) {
+            var _result = await CloudStorageService.instance
+                .uploadMediaMessage(widget._auth.user.uid, _image);
+            var _imgURL = await _result.ref.getDownloadURL();
+            DBService.instance.sendMessage(
+                widget._conversationID,
+                Message(
+                  content: _imgURL,
+                  senderID: widget._auth.user.uid,
+                  timestamp: Timestamp.now(),
+                  type: MessageType.Image,
+                ));
+          }
+        },
         child: Icon(Icons.camera_enhance),
       ),
     );
