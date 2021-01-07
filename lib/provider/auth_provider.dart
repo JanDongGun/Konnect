@@ -55,6 +55,26 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> changePassword(String pass) async {
+    var userr = await _auth.currentUser;
+
+    var authCre =
+        EmailAuthProvider.getCredential(email: userr.email, password: pass);
+
+    try {
+      var authResult = await userr.reauthenticateWithCredential(authCre);
+      return authResult.user != null;
+    } catch (e) {
+      SnackBarSv.instance.showSnackbarError("Password wrong");
+      return false;
+    }
+  }
+
+  Future<void> updatePass(String password) async {
+    var userr = await _auth.currentUser;
+    userr.updatePassword(password);
+  }
+
   void sendPasswordResetMail(String _email) async {
     notifyListeners();
     try {
@@ -103,5 +123,21 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       SnackBarSv.instance.showSnackbarSuccess('Logged out error');
     }
+  }
+
+  void updateProfile(
+      String _name, String _url, Future<void> onSuccess(String _uid)) async {
+    status = AuthStatus.Authenticating;
+    notifyListeners();
+    try {
+      await user.updateProfile(displayName: _name, photoURL: _url);
+      status = AuthStatus.NotAuthenticated;
+      await onSuccess(user.uid);
+      await NavigationService.instance.navigateToReplacement('homepage');
+    } catch (e) {
+      status = AuthStatus.Error;
+      SnackBarSv.instance.showSnackbarSuccess('Update error');
+    }
+    notifyListeners();
   }
 }

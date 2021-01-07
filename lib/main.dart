@@ -4,6 +4,7 @@ import 'package:konnect/pages/forgotpass_page.dart';
 import 'package:konnect/pages/homepage.dart';
 import 'package:konnect/pages/login_page.dart';
 import 'package:konnect/pages/register_page.dart';
+import 'package:konnect/pages/resetpass_page.dart';
 import 'services/navigation_service.dart';
 import 'package:konnect/pages/started_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         "forgot": (BuildContext _context) => ForgotpassPage(),
         "checkmail": (BuildContext _context) => CheckMailPage(),
         "homepage": (BuildContext _context) => HomePage(),
+        "resetpass": (BuildContext _context) => ResetPassPage(),
       },
     );
   }

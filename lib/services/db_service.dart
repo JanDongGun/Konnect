@@ -18,7 +18,7 @@ class DBService {
   Future<void> createUserInDB(
       String _uid, String _name, String _email, String _imageURL) async {
     try {
-      return await _db.collection(_userCollection).doc(_uid).setData({
+      return await _db.collection(_userCollection).doc(_uid).set({
         "name": _name,
         "email": _email,
         "image": _imageURL,
@@ -28,6 +28,20 @@ class DBService {
       if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> updateUserInDB(
+      String _uid, String _name, String _email, String _imageURL) async {
+    try {
+      return await _db.collection(_userCollection).doc(_uid).set({
+        "name": _name,
+        "email": _email,
+        "image": _imageURL,
+        "lastSeen": DateTime.now().toUtc()
+      });
     } catch (e) {
       print(e);
     }
