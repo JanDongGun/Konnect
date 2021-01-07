@@ -102,8 +102,8 @@ class _AccSettingsPageState extends State<AccSettingsPage> {
   }
 
   Widget _userImageWidget(String _image) {
-    double _imageRadius = widget._height * 0.3;
     imageURL = _image;
+    double _imageRadius = widget._height * 0.3;
     return Container(
       margin: EdgeInsets.only(left: 70),
       height: _imageRadius,
@@ -188,8 +188,6 @@ class _AccSettingsPageState extends State<AccSettingsPage> {
                 if (name == null) {
                   name = checkname;
                   updateProfile();
-                } else if (image == null) {
-                  SnackBarSv.instance.showSnackbarError("Please pick a image");
                 } else {
                   updateProfile();
                 }
@@ -212,10 +210,16 @@ class _AccSettingsPageState extends State<AccSettingsPage> {
 
   void updateProfile() {
     widget._auth.updateProfile(name, imageURL, (String _uid) async {
-      var _result =
-          await CloudStorageService.instance.uploadUserImage(_uid, image);
-      var _imageURL = await _result.ref.getDownloadURL();
-      await DBService.instance.updateUserInDB(_uid, name, userEmail, _imageURL);
+      if (image != null) {
+        var _result =
+            await CloudStorageService.instance.uploadUserImage(_uid, image);
+        var _imageURL = await _result.ref.getDownloadURL();
+        await DBService.instance
+            .updateUserInDB(_uid, name, userEmail, _imageURL);
+      } else {
+        await DBService.instance
+            .updateUserInDB(_uid, name, userEmail, imageURL);
+      }
     });
   }
 }

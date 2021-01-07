@@ -42,11 +42,10 @@ class DBService {
   Future<void> updateUserInDB(
       String _uid, String _name, String _email, String _imageURL) async {
     try {
-      return await _db.collection(_userCollection).doc(_uid).set({
+      return await _db.collection(_userCollection).doc(_uid).update({
         "name": _name,
         "email": _email,
         "image": _imageURL,
-        "lastSeen": DateTime.now().toUtc()
       });
     } catch (e) {
       print(e);
