@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:konnect/models/message.dart';
 
@@ -37,7 +35,7 @@ class ConversationSnippet {
 
 class Conversation {
   final String id;
-  final List<String> members;
+  final List members;
   final List<Message> messages;
   final String ownerID;
 

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:konnect/constant.dart';
+import 'package:konnect/services/db_service.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ConversationPage extends StatefulWidget {
   String _conversationID;
@@ -53,17 +57,31 @@ class _ConversationPageState extends State<ConversationPage> {
 
   Widget _messageListView() {
     return Container(
-      width: _width,
-      height: _height * 0.75,
-      child: ListView.builder(
-          itemCount: 1,
-          itemBuilder: (_context, _index) {
-            return _textMessageBubble(true, "Hello");
-          }),
-    );
+        width: _width,
+        height: _height * 0.75,
+        child: StreamBuilder(
+            stream: DBService.instance.getConversation(widget._conversationID),
+            builder: (_context, _snaphot) {
+              var _conversationData = _snaphot.data;
+              if (_conversationData != null) {
+                return ListView.builder(
+                    itemCount: _conversationData.messages.length,
+                    itemBuilder: (_context, _index) {
+                      var _message = _conversationData.messages[_index];
+                      return _textMessageBubble(
+                          true, _message.content, _message.timestamp);
+                    });
+              } else {
+                return SpinKitWanderingCubes(
+                  color: dotColor,
+                  size: 50,
+                );
+              }
+            }));
   }
 
-  Widget _textMessageBubble(bool _isOwnMessage, String _message) {
+  Widget _textMessageBubble(
+      bool _isOwnMessage, String _message, Timestamp _timestamp) {
     List<Color> _colorScheme = _isOwnMessage
         ? [dotColor, Color(0xFF38f9d7)]
         : [Color.fromRGBO(69, 69, 69, 1), Color.fromRGBO(43, 43, 43, 1)];
@@ -93,7 +111,7 @@ class _ConversationPageState extends State<ConversationPage> {
             ),
           ),
           Text(
-            "A moment ago",
+            timeago.format(_timestamp.toDate()),
             style: TextStyle(
               color: Colors.white,
               fontFamily: "Roboto",
