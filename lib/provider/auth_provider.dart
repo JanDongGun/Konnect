@@ -125,7 +125,6 @@ class AuthProvider extends ChangeNotifier {
   void logoutUser(Future<void> onSuccess()) async {
     try {
       await _auth.signOut();
-      user = null;
       await onSuccess();
       await NavigationService.instance.navigateToReplacement('login');
       SnackBarSv.instance.showSnackbarSuccess('Logged out successfully');
