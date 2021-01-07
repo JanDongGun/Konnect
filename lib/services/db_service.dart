@@ -65,4 +65,14 @@ class DBService {
       }).toList();
     });
   }
+
+  Stream<List<Contact>> getUsersInDB(String _searchName){
+    var _ref = _db.collection(_userCollection);
+    return _ref.get.asStream().map((_snapshot){
+      return _snapshot.documents.map((_doc){
+        return Contact.fromFirestore(_doc);
+      }).toList();
+    });
+  }
+
 }

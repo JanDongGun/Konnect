@@ -14,6 +14,11 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  String _searchText;
+
+  _SearchPageState(){
+    _searchText = '';
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,7 +54,11 @@ class _SearchPageState extends State<SearchPage> {
       child: TextField(
         autocorrect: false,
         style: TextStyle(color: Colors.white),
-        onSubmitted: (_input) {},
+        onSubmitted: (_input) {
+          setState((){
+            _searchText = _input;
+          });
+        },
         decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.search,
