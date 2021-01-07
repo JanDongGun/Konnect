@@ -177,7 +177,9 @@ class _AccSettingsPageState extends State<AccSettingsPage> {
   Widget _updateButton() {
     return widget._auth.status == AuthStatus.Authenticating
         ? Align(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              backgroundColor: dotColor,
+            ),
             alignment: Alignment.center,
           )
         : Container(

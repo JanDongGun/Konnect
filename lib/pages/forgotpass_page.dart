@@ -164,27 +164,31 @@ class _ForgotpassPageState extends State<ForgotpassPage> {
 
   Widget sendMailButtonWidget() {
     return _auth.status == AuthStatus.Authenticating
-        ? Align(alignment: Alignment.center, child: CircularProgressIndicator())
-    : SizedBox(
-      height: 60,
-      width: double.infinity,
-      child: FlatButton(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(2000)),
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _auth.sendPasswordResetMail(_email);
-          }
-        },
-        color: dotColor,
-        textColor: Colors.white,
-        child: Text("Send",
-            style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 22,
-                fontWeight: FontWeight.bold)),
-      ),
-    );
+        ? Align(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(
+              backgroundColor: dotColor,
+            ))
+        : SizedBox(
+            height: 60,
+            width: double.infinity,
+            child: FlatButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2000)),
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  _auth.sendPasswordResetMail(_email);
+                }
+              },
+              color: dotColor,
+              textColor: Colors.white,
+              child: Text("Send",
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold)),
+            ),
+          );
   }
 
   Widget backToLoginWidget() {
